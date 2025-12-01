@@ -1,0 +1,25 @@
+/* App-wide styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+}
+
+div {
+    border: 0.5px solid black;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table td, table th {
+    border: 0.5px solid black;
+    
+}
+
+
+.liste_kosten table, .btn {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
