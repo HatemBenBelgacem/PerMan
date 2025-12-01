@@ -15,7 +15,11 @@ let gesamt_summe = use_resource(move || async move {
     total_kosten().await.unwrap_or(0.0) 
 });
     rsx! {
-        div { class:"btn",
+        div {  class:"header",
+            p { "Perman" }
+        }
+        
+        div { 
             class:"functions",
             Link { 
                 class:"btn",
@@ -39,7 +43,7 @@ let gesamt_summe = use_resource(move || async move {
                                 tr {
                                     th { "Datum" }
                                     th { "Bezeichnung" }
-                                    th { "Betrag" }
+                                    th { class:"betrag", colspan:"2", "Betrag" }
                                 }
                             }
                             tbody {
@@ -47,7 +51,8 @@ let gesamt_summe = use_resource(move || async move {
                                     tr { key: "{k.id}",
                                         td { "{k.datum}" }
                                         td { "{k.bezeichnung}" }
-                                        td { "{k.betrag}" }
+                                        td { "CHF" }
+                                        td { class:"betrag", "{k.betrag}" }
                                     }
                                 }
                             }
@@ -70,8 +75,8 @@ let gesamt_summe = use_resource(move || async move {
                 }
             }
         }
-        div {  
-            p { "Total: {gesamt_summe.read().unwrap_or(0.0):.2} CHF" }
+        div {  class:"total_summe",
+            p { "Total: {gesamt_summe.read().unwrap_or(0.0):.2}" }
         }
        
     }
