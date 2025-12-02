@@ -33,6 +33,7 @@ table {
     box-shadow: 
   0 1px 3px rgba(0, 0, 0, 0.05), /* Sehr leicht für die Kante */
   0 10px 15px -5px rgba(0, 0, 0, 0.08); /* Tieferer, weicher Schatten */
+  border-radius: 5px;
 }
 
 .liste_kosten {
@@ -160,4 +161,8 @@ details > summary::before {
 /* Stil für das Icon, wenn der Inhalt AUSGEKLAPPT ist */
 details[open] > summary::before {
   content: "-"; /* Das Symbol für "ausgeklappt" */
+}
+
+.aktion {
+    text-align: right;
 }

@@ -58,7 +58,7 @@ pub fn AddKosten() -> Element {
                                             betrag: save_betrag,
                                         };
                                         list_signal.write().push(kosten);
-                                        nav.push("/");
+                                        nav.push("/kosten");
                             
                                     }
                                     Err(e) => {

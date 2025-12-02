@@ -1,8 +1,10 @@
 use dioxus::{prelude::*};
 
-use crate::backend::{server_functions::kosten_fns::liste_kosten};
+use crate::backend::server_functions::{kosten_fns::liste_kosten};
 use crate::backend::{server_functions::kosten_fns::total_kosten};
-use crate::components::nav::Nav;
+
+use crate::components::delete_kosten::Delete;
+
 
 
 
@@ -41,6 +43,7 @@ let gesamt_summe = use_resource(move || async move {
                                     th { "Datum" }
                                     th { "Bezeichnung" }
                                     th { class:"betrag", colspan:"2", "Betrag" }
+                                    th { class:"aktion", "Aktion" }
                                 }
                             }
                             tbody {
@@ -50,6 +53,7 @@ let gesamt_summe = use_resource(move || async move {
                                         td { "{k.bezeichnung}" }
                                         td { "CHF" }
                                         td { class:"betrag", "{k.betrag}" }
+                                        td { class:"aktion", Delete{kosten_resource: kosten_resource, id: k.id} }
                                     }
                                 }
                             }

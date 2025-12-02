@@ -4,6 +4,7 @@ use components::{liste_kosten::KostenListe, add_kosten::AddKosten, app_layout::A
 
 mod backend;
 mod components;
+mod icons;
 
 static CSS: Asset = asset!("/assets/main.css"); 
 

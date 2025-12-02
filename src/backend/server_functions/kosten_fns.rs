@@ -19,6 +19,18 @@ pub async fn speichere_kosten(datum:NaiveDate, bezeichnung: String, betrag:f64) 
     Ok(result.last_insert_rowid())
 }
 
+#[server]
+pub async fn delete_kosten(id:i64) -> Result<(), ServerFnError> {
+    let db = get_db().await;
+
+    sqlx::query("DELETE FROM kosten WHERE id = ?")
+        .bind(id)
+        .execute(db)
+        .await
+        .map_err(|e| ServerFnError::new(e.to_string()))?;
+    Ok(())
+}
+
 
 #[server]
 pub async fn liste_kosten() -> Result<Vec<Kosten>, ServerFnError> {
