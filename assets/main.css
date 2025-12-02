@@ -70,23 +70,94 @@ button {
     width: 100px;
     height: 30px;
     margin-right: 20px;
-    
+    padding: 10px;
+    border-radius: 5px;
 
 
 }
 
-.header {
-    position: sticky;
+/*Grundgerüst*/
+.container {
+    display:grid;
+    grid-template-areas: 
+    "header header"
+    "menu content";
+    grid-template-columns: 1fr 5fr;
+}
+.container div.header {
+    grid-area: header;
+    border-bottom: 0.5px solid rgb(182, 180, 180);
     background-color: white;
-    border-bottom: 0.5px solid grey;
-    height: 60px;
+    box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.05), /* Sehr leicht für die Kante */
+    0 10px 15px -5px rgba(0, 0, 0, 0.08); /* Tieferer, weicher Schatten */
 }
-.header p {
+.header_title a{
     margin-left: 20px;
+    text-decoration: none;
     
 }
+
+.container div.menu {
+    grid-area:menu;
+    background-color: white;
+    box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.05), /* Sehr leicht für die Kante */
+    0 10px 15px -5px rgba(0, 0, 0, 0.08); /* Tieferer, weicher Schatten */
+    padding: 20px;
+}
+
+.container div.menu .nav_item a {
+    text-decoration: none;
+}
+.container div.conent {
+    grid-area: content;
+}
+
 
 .total_summe, .betrag {
     text-align: right;
     text-decoration: 0.5px double black;
+}
+
+details p {
+    margin: 0;
+}
+
+details p a {
+    text-decoration: none;
+    margin: 0;
+    margin-left: 20px;
+}
+
+details > summary {
+  /* Entfernt den Standard-Marker/das Standard-Icon */
+  list-style: none;
+}
+
+details > summary::marker,
+details > summary::-webkit-details-marker {
+  /* Stellt sicher, dass das Icon auch in Webkit-Browsern entfernt wird */
+  display: none;
+  content: "";
+}
+
+details > summary {
+  cursor: pointer; /* Zeigt an, dass es anklickbar ist */
+  padding: 5px;
+  position: relative; /* Wichtig für die Positionierung des Icons */
+}
+
+/* Stil für das Icon, wenn der Inhalt eingeklappt ist (Standard) */
+details > summary::before {
+  content: ">"; /* Das Symbol für "eingeklappt" */
+  font-weight: bold;
+  margin-right: 10px;
+  /* Weitere Styling-Optionen (Farbe, Größe, etc.) */
+  color: #007bff;
+}
+
+/* Stil für das Icon, wenn der Inhalt AUSGEKLAPPT ist */
+details[open] > summary::before {
+  content: "-"; /* Das Symbol für "ausgeklappt" */
 }

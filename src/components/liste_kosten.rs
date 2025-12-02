@@ -2,6 +2,7 @@ use dioxus::{prelude::*};
 
 use crate::backend::{server_functions::kosten_fns::liste_kosten};
 use crate::backend::{server_functions::kosten_fns::total_kosten};
+use crate::components::nav::Nav;
 
 
 
@@ -15,10 +16,6 @@ let gesamt_summe = use_resource(move || async move {
     total_kosten().await.unwrap_or(0.0) 
 });
     rsx! {
-        div {  class:"header",
-            p { "Perman" }
-        }
-        
         div { 
             class:"functions",
             Link { 

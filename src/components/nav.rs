@@ -4,16 +4,23 @@ use dioxus::prelude::*;
 
 #[component]
 pub fn Nav() -> Element {
-    rsx!{
-        h3 { class:"nav",
-            "Navigation"}
-
-        li { 
-            ul {
-                class:"nav", 
-                Link { to: "/kosten", "Kosten" }
+    rsx!{ 
+        div { class:"nav",
+            h3 {
+                "Navigation"
             }
-        }    
-       
+
+            details {  
+                summary { "Finanzen" }
+                    
+                p { Link { to: "/kosten", "Kosten" } }
+                p { Link { to: "/kosten", "Kosten" } }
+                
+
+
+            }
+
+  
+        }  
     }
 }
