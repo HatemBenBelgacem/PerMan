@@ -129,11 +129,13 @@ details p a {
     text-decoration: none;
     margin: 0;
     margin-left: 20px;
+    color: grey;
 }
 
 details > summary {
   /* Entfernt den Standard-Marker/das Standard-Icon */
   list-style: none;
+  font-weight: bold;
 }
 
 details > summary::marker,
