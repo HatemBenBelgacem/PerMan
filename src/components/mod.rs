@@ -1,6 +1,6 @@
-pub mod add_kosten;
-pub mod delete_kosten;
-pub mod liste_kosten;
+pub mod add_buchung;
+pub mod delete_buchung;
+pub mod liste_buchung;
 pub mod nav;
 pub mod app_layout;
 pub mod header;

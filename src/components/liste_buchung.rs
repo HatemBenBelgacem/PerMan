@@ -1,40 +1,40 @@
 use dioxus::{prelude::*};
 
-use crate::backend::server_functions::{kosten_fns::liste_kosten};
-use crate::backend::{server_functions::kosten_fns::total_kosten};
+use crate::backend::server_functions::{buchung_fns::liste_buchung};
+use crate::backend::{server_functions::buchung_fns::total_buchung};
 
-use crate::components::delete_kosten::Delete;
+use crate::components::delete_buchung::Delete;
 
 
 
 
 
 #[component]
-pub fn KostenListe() -> Element {
-    let kosten_resource = use_resource(move || async move {
-        liste_kosten().await
+pub fn BuchungListe() -> Element {
+    let buchung_resource = use_resource(move || async move {
+        liste_buchung().await
     });
 let gesamt_summe = use_resource(move || async move { 
-    total_kosten().await.unwrap_or(0.0) 
+    total_buchung().await.unwrap_or(0.0) 
 });
     rsx! {
         div { 
             class:"functions",
             Link { 
                 class:"btn",
-                to: "/kosten/add", "Neu kosten",
+                to: "/buchung/add", "Neu buchung",
             }
             Link { 
                 class: "btn",
                 to: "/", "Zurück" 
             } 
         }
-        div { class: "liste_kosten",
-            match &*kosten_resource.read_unchecked() {
+        div { class: "liste_buchung",
+            match &*buchung_resource.read_unchecked() {
                 // 1. Erfolgreich geladen (Some -> Ok)
-                Some(Ok(kosten)) => rsx! {
-                    if kosten.is_empty() {
-                        div { "Keine Kosten gefunden." }
+                Some(Ok(buchung)) => rsx! {
+                    if buchung.is_empty() {
+                        div { "Keine Buchung gefunden." }
                     } else {
                         table {
 
@@ -47,13 +47,13 @@ let gesamt_summe = use_resource(move || async move {
                                 }
                             }
                             tbody {
-                                for k in kosten {
+                                for k in buchung {
                                     tr { key: "{k.id}",
                                         td { "{k.datum}" }
                                         td { "{k.bezeichnung}" }
                                         td { "CHF" }
-                                        td { class:"betrag", "{k.betrag}" }
-                                        td { class:"aktion", Delete{kosten_resource: kosten_resource, id: k.id} }
+                                        td { class:"betrag", "{k.betrag:.2}" }
+                                        td { class:"aktion", Delete{buchung_resource: buchung_resource, id: k.id} }
                                     }
                                 }
                             }
@@ -65,7 +65,7 @@ let gesamt_summe = use_resource(move || async move {
                 Some(Err(e)) => rsx! {
                     div { 
                         style: "color: red;",
-                        "Fehler beim Laden der Kosten: {e}" 
+                        "Fehler beim Laden der Buchung: {e}" 
                     }
                 },
 

@@ -3,8 +3,12 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     background-color:#edf2f9;
-}
+    
 
+}
+#main {
+    min-height:100vh;
+}
 
 table {
     border-collapse: collapse;
@@ -13,7 +17,7 @@ table {
 
 }
 
-.liste_kosten, .total_summe {
+.liste_kosten, .total_summe, .add_form {
     padding: 30px;
     background-color: white;
     width: 50%;
@@ -84,6 +88,7 @@ button {
     "header header"
     "menu content";
     grid-template-columns: 1fr 5fr;
+    min-height: 100vh;
 }
 .container div.header {
     grid-area: header;
@@ -106,6 +111,7 @@ button {
     0 1px 3px rgba(0, 0, 0, 0.05), /* Sehr leicht für die Kante */
     0 10px 15px -5px rgba(0, 0, 0, 0.08); /* Tieferer, weicher Schatten */
     padding: 20px;
+    min-height: 100vh;
 }
 
 .container div.menu .nav_item a {
@@ -167,4 +173,34 @@ details[open] > summary::before {
 
 .aktion {
     text-align: right;
+}
+
+.add_form {
+    margin-top: 20px;
+}
+
+.add_form input {
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 12pt;
+    width: 50%;
+}
+
+/*Button*/
+button {
+    all: unset;
+}
+
+.btn {
+    border:0.5px solid black;
+    color: #1f1f1f;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5;
+    height: 25px;
+    width: 80px;
+    font-size: 12pt;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-right: 20px;
 }

@@ -21,11 +21,36 @@ async fn db() -> Pool<Sqlite> {
 
   // Tabelle erstellen
   pool.execute("
-    CREATE TABLE IF NOT EXISTS kosten (
+    CREATE TABLE IF NOT EXISTS buchung (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       datum DATE NOT NULL,
       bezeichnung TEXT NOT NULL,
       betrag FLOAT NOT NULL
+    )
+  ").await.expect("Konnte Tabelle nicht erstellen");
+
+    pool.execute("
+    ALTER TABLE buchung (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      datum DATE NOT NULL,
+      bezeichnung TEXT NOT NULL,
+      betrag FLOAT NOT NULL,
+      periode_id INTEGER NOT NULL,
+      typ_id INTEGER NOT NULL
+    )
+  ").await.expect("Konnte Tabelle nicht erstellen");
+
+    pool.execute("
+    CREATE TABLE IF NOT EXISTS periode (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      bezeichnung DATE NOT NULL
+    )
+  ").await.expect("Konnte Tabelle nicht erstellen");
+
+      pool.execute("
+    CREATE TABLE IF NOT EXISTS typ (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      bezeichnung DATE NOT NULL
     )
   ").await.expect("Konnte Tabelle nicht erstellen");
 
