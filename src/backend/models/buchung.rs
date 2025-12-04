@@ -14,5 +14,4 @@ pub struct Buchung {
     pub bezeichnung: String,
     pub betrag: f64,
     pub periode: Option<String>,
-    pub typ: Option<String>,
 }
