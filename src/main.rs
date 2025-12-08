@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use components::{liste_buchung::BuchungListe, add_buchung::AddBuchung, app_layout::AppLayout, home::Home};
+use components::{liste_buchung::BuchungListe, add_buchung::AddBuchung, app_layout::AppLayout, home::Home, add_periode::AddPeriode};
 
 mod backend;
 mod components;
@@ -17,7 +17,9 @@ enum Route {
     #[route("/buchung")]
     BuchungListe {},
     #[route("/buchung/add")]
-    AddBuchung{}
+    AddBuchung{},
+    #[route("/periode/add")]
+    AddPeriode{}
 
 }
 
