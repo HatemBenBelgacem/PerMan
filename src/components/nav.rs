@@ -13,8 +13,8 @@ pub fn Nav() -> Element {
             details {  
                 summary { "Finanzen" }
                     
-                p { Link { to: "/kosten", "Kosten" } }
-                p { Link { to: "/kosten", "Monatsübersicht" } }
+                p { Link { to: "/buchung", "Buchungsübersicht" } }
+                p { Link { to: "/buchung", "Monatsübersicht" } }
                 
 
 

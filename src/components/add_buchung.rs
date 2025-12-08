@@ -10,7 +10,7 @@ pub fn AddBuchung() -> Element {
     let mut datum = use_signal(|| Local::now().format("%Y-%m-%d").to_string());
     let mut bezeichnung = use_signal(|| String::new());
     let mut betrag = use_signal(|| String::new());
-    let mut selected_periode_id = use_signal(|| 0i64);
+    let mut sel_periode_id = use_signal(|| 0i64);
 
     let mut list_signal = use_signal(|| Vec::<Buchung>::new()); 
     let nav = use_navigator();
@@ -49,20 +49,16 @@ pub fn AddBuchung() -> Element {
                     let save_datum = datum.read().clone();
                     let save_bezeichnung = bezeichnung.read().clone();
                     let save_betrag = betrag.read().parse::<f64>().unwrap_or(0.0);
-                    let save_periode = selected_periode_id.read().clone();
-                    let save_typ = selected_typ_id.read().clone();
-
-
+                    let save_periode = sel_periode_id.read().clone();
 
                     if let Ok(parsed_datum) = NaiveDate::parse_from_str(&save_datum, "%Y-%m-%d") {
-                                match speichere_buchung(parsed_datum, save_bezeichnung.clone(), save_betrag.clone(), save_periode).await {
+                                match speichere_buchung(parsed_datum, save_bezeichnung.clone(), save_betrag.clone()).await {
                                     Ok(id) => {
                                         let buchung = Buchung {
                                             id,
                                             datum: parsed_datum,
                                             bezeichnung: save_bezeichnung,
                                             betrag: save_betrag,
-                                            periode: save_periode,
                                         };
                                         list_signal.write().push(buchung);
                                         nav.push("/buchung");

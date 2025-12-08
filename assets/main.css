@@ -17,7 +17,7 @@ table {
 
 }
 
-.liste_kosten, .total_summe, .add_form {
+.liste_buchung, .total_summe, .add_form {
     padding: 30px;
     background-color: white;
     width: 50%;
@@ -40,7 +40,7 @@ table {
   border-radius: 5px;
 }
 
-.liste_kosten {
+.liste_buchung {
     border-radius: 5px 5px 0px 0px;
     border-bottom: 0.5px solid grey;
 }

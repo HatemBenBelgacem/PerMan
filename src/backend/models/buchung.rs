@@ -13,5 +13,4 @@ pub struct Buchung {
     pub datum: NaiveDate,
     pub bezeichnung: String,
     pub betrag: f64,
-    pub periode: Option<String>,
 }
