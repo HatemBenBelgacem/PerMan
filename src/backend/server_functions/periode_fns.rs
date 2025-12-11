@@ -17,6 +17,19 @@ pub async fn speichere_periode(bezeichnung:String) -> Result<i64, ServerFnError>
 }
 
 #[server]
+pub async fn delete_periode(id:i64) -> Result<(), ServerFnError> {
+    let db = get_db().await;
+
+    sqlx::query("DELETE FROM periode WHERE id = ?")
+        .bind(id)
+        .execute(db)
+        .await
+        .map_err(|e| ServerFnError::new(e.to_string()))?;
+    Ok(())
+}
+
+
+#[server]
 pub async fn liste_periode() -> Result<Vec<Periode>, ServerFnError> {
     let db = get_db().await;
 

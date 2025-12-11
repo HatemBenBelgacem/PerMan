@@ -11,9 +11,7 @@ use crate::components::delete_buchung::Delete;
 
 #[component]
 pub fn BuchungListe() -> Element {
-    let buchung_resource = use_resource(move || async move {
-        liste_buchung().await
-    });
+let buchung_resource = use_resource(move || async move {liste_buchung().await});
 let gesamt_summe = use_resource(move || async move { 
     total_buchung().await.unwrap_or(0.0) 
 });
@@ -29,7 +27,7 @@ let gesamt_summe = use_resource(move || async move {
                 to: "/", "Zurück" 
             } 
         }
-        div { class: "liste_buchung",
+        div { class: "liste",
             match &*buchung_resource.read_unchecked() {
                 // 1. Erfolgreich geladen (Some -> Ok)
                 Some(Ok(buchung)) => rsx! {
@@ -49,7 +47,7 @@ let gesamt_summe = use_resource(move || async move {
                             tbody {
                                 for k in buchung {
                                     tr { key: "{k.id}",
-                                        td { "{k.datum}" }
+                                        td { "{k.datum.format(\"%B\")}" }
                                         td { "{k.bezeichnung}" }
                                         td { "CHF" }
                                         td { class:"betrag", "{k.betrag:.2}" }

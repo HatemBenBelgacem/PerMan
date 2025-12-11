@@ -12,12 +12,13 @@ pub fn Nav() -> Element {
 
             details {  
                 summary { "Finanzen" }
-                    
                 p { Link { to: "/buchung", "Buchungsübersicht" } }
-                p { Link { to: "/buchung", "Monatsübersicht" } }
-                
+                p { Link { to: "/jahresuebersicht", "Jahresübersicht" } }
+            }
 
-
+            details{ 
+                summary { "Einstellungen" }
+                p { Link { to: "/periode", "Perioden" } }
             }
 
   

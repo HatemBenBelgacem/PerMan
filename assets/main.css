@@ -17,7 +17,7 @@ table {
 
 }
 
-.liste_buchung, .total_summe, .add_form {
+.liste, .total_summe, .add_form {
     padding: 30px;
     background-color: white;
     width: 50%;
@@ -40,7 +40,7 @@ table {
   border-radius: 5px;
 }
 
-.liste_buchung {
+.liste {
     border-radius: 5px 5px 0px 0px;
     border-bottom: 0.5px solid grey;
 }
@@ -203,4 +203,21 @@ button {
     text-align: center;
     margin-bottom: 10px;
     margin-right: 20px;
+}
+
+.monats_container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    
+}
+
+.monats_wrapper table {
+    border-collapse: collapse;
+    min-width: 120px;
+    align-items: end;
+    
+}
+.monats_wrapper table tr td, .monats_wrapper table tr th {
+    text-align: end;
 }
