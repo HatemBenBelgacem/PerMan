@@ -1,6 +1,7 @@
 use dioxus::prelude::*;
 
 use crate::backend::server_functions::buchung_fns::liste_buchung;
+use crate::backend::{server_functions::buchung_fns::total_buchung};
 
 #[component]
 pub fn Jahresuebersicht() -> Element {
@@ -22,20 +23,27 @@ pub fn Jahresuebersicht() -> Element {
                                             th { "{m}" }
                                         }
                                     }
-                                    for b in buchung.iter().filter(|b| b.datum.format("%m").to_string() == *index_str) {
-                                        
-                                            tbody {
-                                            tr {
-                                                td { "{b.betrag:.2}" }
+                                    tbody {
+                                        {
+                                            let total:f64 = buchung.iter().filter(|b| b.datum.format("%m").to_string() == *index_str).map(|b| b.betrag).sum();
+                                            rsx! {
+                                                for b in buchung.iter().filter(|b| b.datum.format("%m").to_string() == *index_str) {
+                                                    tr {
+                                                        td { "{b.betrag:.2}" }
+                                                        
+                                                    }
+                                                }
+                                                if total == 0.0 {
+                                                    td {class:"total", "-" }
+                                                } else {
+                                                    td { class:"total","{total:.2}"}
+                                                }
+                                                
                                             }
-                                        
+                                        }
                                     }
-                                    
-                                    
                                 }
                             }
-                        }
-
                         }
                     }
 

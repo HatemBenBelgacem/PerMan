@@ -224,3 +224,7 @@ button {
     border:0.5px solid black;
 }
 
+.total {
+    font-weight: bold;
+    text-decoration:double;
+}
