@@ -34,7 +34,7 @@ pub fn Jahresuebersicht() -> Element {
                                                     }
                                                 }
                                                 if total == 0.0 {
-                                                    td {class:"total", "-" }
+                                                    td {class:"total", "0.00" }
                                                 } else {
                                                     td { class:"total","{total:.2}"}
                                                 }
