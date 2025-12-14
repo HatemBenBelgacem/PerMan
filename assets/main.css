@@ -228,3 +228,15 @@ button {
     font-weight: bold;
     text-decoration:double;
 }
+
+.login-container {
+    max-width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+input { margin-bottom: 10px; width: 100%; }
+button { cursor: pointer; background: #007bff; color: white; border: none; padding: 10px; }

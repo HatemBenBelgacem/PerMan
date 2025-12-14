@@ -20,28 +20,10 @@ async fn db() -> Pool<Sqlite> {
       .expect("Konnte Datenbank nicht verbinden");
 
   // Tabelle erstellen
-  pool.execute("
-    CREATE TABLE IF NOT EXISTS buchung (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      datum DATE NOT NULL,
-      bezeichnung TEXT NOT NULL,
-      betrag FLOAT NOT NULL
-    )
-  ").await.expect("Konnte Tabelle nicht erstellen");
-
-    pool.execute("
-    CREATE TABLE IF NOT EXISTS periode (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      bezeichnung DATE NOT NULL
-    )
-  ").await.expect("Konnte Tabelle nicht erstellen");
-
-      pool.execute("
-    CREATE TABLE IF NOT EXISTS typ (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      bezeichnung DATE NOT NULL
-    )
-  ").await.expect("Konnte Tabelle nicht erstellen");
+  sqlx::migrate!("./migrations")
+      .run(&pool)
+      .await
+      .expect("Migration fehlgeschlagen");
 
   pool
 }
