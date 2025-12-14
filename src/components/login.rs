@@ -7,18 +7,18 @@ pub fn LoginPage() -> Element {
     let mut is_logged_in = use_context::<Signal<bool>>();
     let nav = use_navigator();
 
-    let mut username = use_signal(|| "".to_string());
+    let mut benutzername = use_signal(|| "".to_string());
     let mut password = use_signal(|| "".to_string());
     let mut error_msg = use_signal(|| "".to_string());
 
     let on_submit = move |_| {
-        let user = username.read();
+        let benutzer = benutzername.read();
         let pass = password.read();
 
         // Einfache Prüfung (später durch Server-Call ersetzen)
-        if user.is_empty() || pass.is_empty() {
+        if benutzer.is_empty() || pass.is_empty() {
             error_msg.set("Bitte fülle alle Felder aus!".to_string());
-        } else if *user == "admin" && *pass == "1234" { // Beispiel-Logik
+        } else if *benutzer == "admin" && *pass == "1234" { // Beispiel-Logik
             // 1. Status auf "Eingeloggt" setzen
             is_logged_in.set(true);
             // 2. Zur Startseite leiten
@@ -37,14 +37,13 @@ pub fn LoginPage() -> Element {
             }
 
             form { 
-                prevent_default: "onsubmit", 
-                onsubmit: on_submit,
+              
 
                 div {
                     label { "Benutzername:" }
                     input { 
-                        value: "{username}", 
-                        oninput: move |evt| username.set(evt.value()) 
+                        value: "{benutzername}", 
+                        oninput: move |evt| benutzername.set(evt.value()) 
                     }
                 }
                 div {

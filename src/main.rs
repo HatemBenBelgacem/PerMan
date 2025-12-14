@@ -42,35 +42,28 @@ fn main() {
     dioxus::launch(App);
 }
 
-// in src/main.rs
+
 
 #[component]
 fn App() -> Element {
     use_context_provider(|| Signal::new(false)); // is_logged_in status
     
-    // Resource für den Check beim Start
+    // Server Health Check beim Start
     let check_users = use_resource(move || async move {
         existiert_benutzer().await
     });
 
-    // CSS laden
     rsx! {
         document::Stylesheet { href: CSS }
         
-        // Wir warten auf das Ergebnis des Checks
         match &*check_users.read_unchecked() {
-            Some(Ok(exists)) => {
-                // Wenn Check erfolgreich:
-                if !*exists {
-                    // Wenn kein Benutzer existiert -> Direkt Register anzeigen (ohne Router-Logik)
-                    rsx! { RegisterPage {} }
-                } else {
-                    // Wenn Benutzer existieren -> Router starten (der dann zum Login leitet via AppLayout)
-                    rsx! { Router::<Route> {} }
-                }
+            Some(Ok(_)) => {
+                // Server läuft -> Router starten (ohne spezielle Config)
+                // Die Logik für den Redirect passiert jetzt im AppLayout
+                rsx! { Router::<Route> {} }
             },
-            Some(Err(e)) => rsx! { div { "Server Fehler: {e}" } }, // Fehler anzeigen!
-            None => rsx! { div { "Lade System..." } } // Ladebildschirm
+            Some(Err(e)) => rsx! { div { "Server Fehler: {e}" } },
+            None => rsx! { div { "Lade System..." } } 
         }
     }
 }
