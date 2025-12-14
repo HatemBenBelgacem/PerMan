@@ -1,242 +1,372 @@
-/* App-wide styling */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    background-color:#edf2f9;
+/* Google Fonts Import für modernen Look */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+    /* Farbpalette - Modernes Blau/Grau Thema */
+    --primary: #4f46e5;       /* Indigo */
+    --primary-hover: #4338ca;
+    --secondary: #64748b;     /* Slate Grey */
+    --background: #f1f5f9;    /* Helles Grau/Blau für Hintergrund */
+    --surface: #ffffff;       /* Weiß für Karten */
+    --text-main: #1e293b;     /* Fast Schwarz */
+    --text-muted: #64748b;    /* Grau für Labels */
+    --danger: #ef4444;        /* Rot für Löschen */
+    --border: #e2e8f0;        /* Sehr helles Grau für Linien */
     
-
+    /* Schatten für Tiefe */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --radius: 8px; /* Abgerundete Ecken */
 }
-#main {
-    min-height:100vh;
+
+/* Global Reset & Body */
+* {
+    box-sizing: border-box;
 }
 
-table {
-    border-collapse: collapse;
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background-color: var(--background);
+    color: var(--text-main);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s;
+}
+
+/* Layout Grid - Überarbeitet für bessere Proportionen */
+.container {
+    display: grid;
+    grid-template-areas: 
+        "menu header"
+        "menu content";
+    grid-template-columns: 260px 1fr; /* Fixe Breite für Menü */
+    grid-template-rows: 60px 1fr;     /* Fixe Höhe für Header */
+    min-height: 100vh;
+}
+
+/* Header Styling */
+.container div.header {
+    grid-area: header;
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.header_title a {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--primary);
+    margin: 0;
+}
+
+/* Sidebar / Navigation Styling */
+.container div.menu {
+    grid-area: menu;
+    background-color: #1e293b; /* Dunkle Sidebar für Kontrast */
+    color: #e2e8f0;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu h3 {
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 10px;
+}
+
+/* Navigations-Elemente (Details/Summary) modernisieren */
+details {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 10px;
+}
+
+details > summary {
+    list-style: none;
+    cursor: pointer;
+    font-weight: 500;
+    padding: 8px 10px;
+    border-radius: var(--radius);
+    transition: background 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+details > summary:hover {
+    background-color: #334155;
+    color: white;
+}
+
+/* Pfeil entfernen (Standard) */
+details > summary::marker,
+details > summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Eigener Pfeil mit CSS */
+details > summary::after {
+    content: "›";
+    font-size: 1.2rem;
+    line-height: 0.8;
+    transition: transform 0.2s;
+}
+
+details[open] > summary::after {
+    transform: rotate(90deg);
+}
+
+details[open] > summary {
+    color: var(--primary-color); 
+    margin-bottom: 5px;
+}
+
+/* Links in der Navigation */
+details p a {
+    display: block;
+    padding: 8px 10px 8px 25px; /* Einrückung */
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    border-radius: var(--radius);
+    margin: 2px 0;
+}
+
+details p a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+/* Main Content Area */
+.container div.content {
+    grid-area: content;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+/* Modern Cards / Containers (Liste, Formulare) */
+.liste, .total_summe, .add_form, .functions {
+    background-color: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    padding: 25px;
+    margin: 0 auto 20px auto;
     width: 100%;
-
+    max-width: 900px; /* Begrenzte Breite für Lesbarkeit */
 }
 
-.liste, .total_summe, .add_form {
-    padding: 30px;
-    background-color: white;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 
-  0 1px 3px rgba(0, 0, 0, 0.05), /* Sehr leicht für die Kante */
-  0 10px 15px -5px rgba(0, 0, 0, 0.08); /* Tieferer, weicher Schatten */
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: separate; /* Für Border-Radius an Reihen */
+    border-spacing: 0;
+    margin-top: 10px;
 }
 
-.functions {
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: white;
-    padding: 30px;
-    box-shadow: 
-  0 1px 3px rgba(0, 0, 0, 0.05), /* Sehr leicht für die Kante */
-  0 10px 15px -5px rgba(0, 0, 0, 0.08); /* Tieferer, weicher Schatten */
-  border-radius: 5px;
+table th {
+    text-align: left;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
 }
 
-.liste {
-    border-radius: 5px 5px 0px 0px;
-    border-bottom: 0.5px solid grey;
+table td {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-main);
+    vertical-align: middle;
+}
+
+table tr:last-child td {
+    border-bottom: none;
+}
+
+table tr:hover td {
+    background-color: #f8fafc;
+}
+
+/* Spezielle Tabellenzellen */
+.betrag, .total {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
 }
 
 .total_summe {
-    border-radius: 0 0 5px 5px;
-}
-table th {
-    text-align: left;
-}
-
-table td, table th {
-    border-bottom: 0.5px solid rgb(160, 160, 160);
-    height: 30px;
-    
-}
-
-/*Button*/
-button {
-    all: unset;
-}
-
-.functions {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.functions .btn {
-    border:0.5px solid black;
-    color: #1f1f1f;
-    text-decoration: none;
-    width: 100px;
-    height: 30px;
-    margin-right: 20px;
-    padding: 10px;
-    border-radius: 5px;
-
-
-}
-
-/*Grundgerüst*/
-.container {
-    display:grid;
-    grid-template-areas: 
-    "header header"
-    "menu content";
-    grid-template-columns: 1fr 5fr;
-    min-height: 100vh;
-}
-.container div.header {
-    grid-area: header;
-    border-bottom: 0.5px solid rgb(182, 180, 180);
-    background-color: white;
-    box-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.05), /* Sehr leicht für die Kante */
-    0 10px 15px -5px rgba(0, 0, 0, 0.08); /* Tieferer, weicher Schatten */
-}
-.header_title a{
-    margin-left: 20px;
-    text-decoration: none;
-    
-}
-
-.container div.menu {
-    grid-area:menu;
-    background-color: white;
-    box-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.05), /* Sehr leicht für die Kante */
-    0 10px 15px -5px rgba(0, 0, 0, 0.08); /* Tieferer, weicher Schatten */
-    padding: 20px;
-    min-height: 100vh;
-}
-
-.container div.menu .nav_item a {
-    text-decoration: none;
-}
-.container div.conent {
-    grid-area: content;
-}
-
-
-.total_summe, .betrag {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary);
     text-align: right;
-    text-decoration: 0.5px double black;
+    border-top: none;
+    margin-top: -20px; /* Verbindet es optisch mit der Liste */
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
-details p {
-    margin: 0;
-}
-
-details p a {
-    text-decoration: none;
-    margin: 0;
-    margin-left: 20px;
-    color: grey;
-}
-
-details > summary {
-  /* Entfernt den Standard-Marker/das Standard-Icon */
-  list-style: none;
-  font-weight: bold;
-}
-
-details > summary::marker,
-details > summary::-webkit-details-marker {
-  /* Stellt sicher, dass das Icon auch in Webkit-Browsern entfernt wird */
-  display: none;
-  content: "";
-}
-
-details > summary {
-  cursor: pointer; /* Zeigt an, dass es anklickbar ist */
-  padding: 5px;
-  position: relative; /* Wichtig für die Positionierung des Icons */
-}
-
-/* Stil für das Icon, wenn der Inhalt eingeklappt ist (Standard) */
-details > summary::before {
-  content: ">"; /* Das Symbol für "eingeklappt" */
-  font-weight: bold;
-  margin-right: 10px;
-  /* Weitere Styling-Optionen (Farbe, Größe, etc.) */
-  color: #007bff;
-}
-
-/* Stil für das Icon, wenn der Inhalt AUSGEKLAPPT ist */
-details[open] > summary::before {
-  content: "-"; /* Das Symbol für "ausgeklappt" */
-}
-
+/* Action Buttons (Icons) */
 .aktion {
     text-align: right;
 }
 
-.add_form {
+.aktion button {
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.aktion button:hover {
+    color: var(--danger);
+    background-color: #fee2e2;
+}
+
+/* Forms & Inputs */
+.add_form label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin-bottom: 6px;
+    margin-top: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 1rem;
+    color: var(--text-main);
+    background-color: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Buttons */
+button, .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-decoration: none;
+    width: auto;
+    height: auto;
+    margin-right: 10px;
+}
+
+button:hover, .btn:hover {
+    background-color: var(--primary-hover);
+}
+
+button:disabled {
+    background-color: #cbd5e1;
+    cursor: not-allowed;
+}
+
+/* Function Bar (Zurück Buttons etc) */
+.functions {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.functions .btn {
+    background-color: white;
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+.functions .btn:hover {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+/* Login Screen */
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+}
+
+.login-container h2 {
+    color: var(--text-main);
+    margin-bottom: 30px;
+}
+
+.login-container button {
+    width: 100%;
     margin-top: 20px;
 }
 
-.add_form input {
-    margin-bottom: 20px;
-    padding: 10px;
-    font-size: 12pt;
-    width: 50%;
-}
-
-/*Button*/
-button {
-    all: unset;
-}
-
-.btn {
-    border:0.5px solid black;
-    color: #1f1f1f;
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 5;
-    height: 25px;
-    width: 80px;
-    font-size: 12pt;
-    text-align: center;
-    margin-bottom: 10px;
-    margin-right: 20px;
-}
-
+/* Jahresübersicht Grid */
 .monats_container {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
 }
 
-.monats_wrapper table{
-    border-collapse: collapse;
-    align-items: end;
-    width: 120px;
+.monats_wrapper {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
 }
 
-
-.monats_wrapper td, .monats_wrapper th {
-    text-align: end;
-    border:0.5px solid black;
+.monats_wrapper table {
+    margin: 0;
 }
 
-.total {
-    font-weight: bold;
-    text-decoration:double;
+.monats_wrapper th {
+    background-color: #f8fafc;
+    text-align: center;
 }
 
-.login-container {
-    max-width: 300px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
+.monats_wrapper td {
+    text-align: right;
+    border-bottom: 1px solid var(--border);
 }
-input { margin-bottom: 10px; width: 100%; }
-button { cursor: pointer; background: #007bff; color: white; border: none; padding: 10px; }
