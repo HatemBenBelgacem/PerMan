@@ -5,6 +5,19 @@ use crate::Route;
 
 #[component]
 pub fn AppLayout() -> Element {
+    let is_logged_in = use_context::<Signal<bool>>();
+    let nav = use_navigator();
+
+    if !*is_logged_in.read() {
+        use_effect(move || {
+            nav.replace(Route::LoginPage {});
+        });
+
+        return rsx!{ div {"Bitte Warten..."}};
+    }
+    
+    
+    
     rsx!{
         div { 
             class:"container",

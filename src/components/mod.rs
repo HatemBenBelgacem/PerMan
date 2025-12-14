@@ -9,3 +9,5 @@ pub mod header;
 pub mod home;
 pub mod liste_periode;
 pub mod jahresuebersicht;
+pub mod login;
+pub mod register;
