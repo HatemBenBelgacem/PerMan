@@ -2,6 +2,7 @@ use dioxus::prelude::*;
 
 use crate::backend::server_functions::buchung_fns::liste_buchung;
 use crate::backend::{server_functions::buchung_fns::total_buchung};
+use crate::backend::models::buchung::BuchungsIntervall;
 
 #[component]
 pub fn Jahresuebersicht() -> Element {
@@ -25,9 +26,18 @@ pub fn Jahresuebersicht() -> Element {
                                     }
                                     tbody {
                                         {
-                                            let total:f64 = buchung.iter().filter(|b| b.datum.format("%m").to_string() == *index_str).map(|b| b.betrag).sum();
+                                            let total:f64 = buchung.iter()
+                                                .filter(|b| b.datum.format("%m")
+                                                .to_string() == *index_str || b.intervall == Some(BuchungsIntervall::Monatlich))
+                                                .map(|b| b.betrag)
+                                                .sum();
+                                            let monatlich = buchung.iter()
+                                                .filter(|b| b.datum.format("%m")
+                                                .to_string() == *index_str || b.intervall == Some(BuchungsIntervall::Monatlich));
+                                            
+                                            
                                             rsx! {
-                                                for b in buchung.iter().filter(|b| b.datum.format("%m").to_string() == *index_str) {
+                                                for b in monatlich {
                                                     tr {
                                                         td { "{b.betrag:.2}" }
                                                         

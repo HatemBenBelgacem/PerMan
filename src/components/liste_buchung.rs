@@ -6,9 +6,6 @@ use crate::backend::{server_functions::buchung_fns::total_buchung};
 use crate::components::delete_buchung::Delete;
 
 
-
-
-
 #[component]
 pub fn BuchungListe() -> Element {
 let buchung_resource = use_resource(move || async move {liste_buchung().await});
@@ -40,6 +37,7 @@ let gesamt_summe = use_resource(move || async move {
                                 tr {
                                     th { "Datum" }
                                     th { "Bezeichnung" }
+                                    th { "Intervall" }
                                     th { class:"betrag", colspan:"2", "Betrag" }
                                     th { class:"aktion", "Aktion" }
                                 }
@@ -47,8 +45,11 @@ let gesamt_summe = use_resource(move || async move {
                             tbody {
                                 for k in buchung {
                                     tr { key: "{k.id}",
-                                        td { "{k.datum.format(\"%B\")}" }
+                                        td { "{k.datum}" }
                                         td { "{k.bezeichnung}" }
+                                        td { 
+                                            "{k.intervall.as_ref().map(|i| i.to_string()).unwrap_or_else(|| \"-\".to_string())}" 
+                                        }
                                         td { "CHF" }
                                         td { class:"betrag", "{k.betrag:.2}" }
                                         td { class:"aktion", Delete{buchung_resource: buchung_resource, id: k.id} }
