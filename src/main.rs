@@ -49,7 +49,7 @@ fn App() -> Element {
 
     let nav = use_navigator();
 
-    let check_users = use_resource(move || async move {
+    let _check_users = use_resource(move || async move {
         if let Ok(exists) = existiert_benutzer().await {
             if !exists{
                 nav.replace(Route::RegisterPage {});
