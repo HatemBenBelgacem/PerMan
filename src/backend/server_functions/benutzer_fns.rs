@@ -32,3 +32,19 @@ pub async fn speichere_benutzer(benutzername: String, email: String, passwort:St
         
     Ok(result.last_insert_rowid())
 }
+
+
+#[server]
+pub async fn login_check(benutzername: String, passwort: String) -> Result<bool, ServerFnError> {
+    let db = get_db().await;
+    
+    // Wir zählen, ob es einen Eintrag gibt, der auf beide Felder passt
+    let count: i64 = sqlx::query_scalar("SELECT COUNT(*) FROM benutzer WHERE benutzername = ? AND passwort = ?")
+        .bind(benutzername)
+        .bind(passwort)
+        .fetch_one(db)
+        .await
+        .map_err(|e| ServerFnError::new(e.to_string()))?;
+
+    Ok(count > 0)
+}

@@ -1,9 +1,11 @@
+// src/components/login.rs
 use dioxus::prelude::*;
-use crate::Route; // Für die Navigation
+use crate::Route; 
+// Importieren Sie die neue Funktion
+use crate::backend::server_functions::benutzer_fns::login_check; 
 
 #[component]
 pub fn LoginPage() -> Element {
-    // Zugriff auf den globalen Status, um ihn zu ändern
     let mut is_logged_in = use_context::<Signal<bool>>();
     let nav = use_navigator();
 
@@ -11,20 +13,28 @@ pub fn LoginPage() -> Element {
     let mut password = use_signal(|| "".to_string());
     let mut error_msg = use_signal(|| "".to_string());
 
-    let on_submit = move |_| {
-        let benutzer = benutzername.read();
-        let pass = password.read();
+    // Machen Sie den Handler asynchron (async move)
+    let on_submit = move |_| async move {
+        let benutzer = benutzername.read().clone();
+        let pass = password.read().clone();
 
-        // Einfache Prüfung (später durch Server-Call ersetzen)
         if benutzer.is_empty() || pass.is_empty() {
             error_msg.set("Bitte fülle alle Felder aus!".to_string());
-        } else if *benutzer == "admin" && *pass == "1234" { // Beispiel-Logik
-            // 1. Status auf "Eingeloggt" setzen
-            is_logged_in.set(true);
-            // 2. Zur Startseite leiten
-            nav.replace(Route::Home {});
-        } else {
-            error_msg.set("Falsche Zugangsdaten".to_string());
+            return;
+        }
+
+        // Server-Call statt hartkodierter Vergleich
+        match login_check(benutzer, pass).await {
+            Ok(true) => {
+                is_logged_in.set(true);
+                nav.replace(Route::Home {});
+            }
+            Ok(false) => {
+                error_msg.set("Falsche Zugangsdaten".to_string());
+            }
+            Err(e) => {
+                error_msg.set(format!("Serverfehler: {}", e));
+            }
         }
     };
 
@@ -37,7 +47,9 @@ pub fn LoginPage() -> Element {
             }
 
             form { 
-              
+                // prevent_default und onsubmit handler anpassen
+                prevent_default: "onsubmit",
+                onsubmit: on_submit,
 
                 div {
                     label { "Benutzername:" }
@@ -55,7 +67,7 @@ pub fn LoginPage() -> Element {
                     }
                 }
                 button { 
-                    class: "btn", // Deine CSS Klasse nutzen
+                    class: "btn", 
                     style: "width: 100%; margin-top: 10px;",
                     r#type: "submit", 
                     "Anmelden" 
