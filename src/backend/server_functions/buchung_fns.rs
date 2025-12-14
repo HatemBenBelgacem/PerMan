@@ -1,15 +1,15 @@
 use dioxus::prelude::*;
-use crate::backend::models::buchung::{Buchung, BuchungsIntervall};
+use crate::backend::models::buchung::{Buchung, BuchungsIntervall, Art};
 use chrono::NaiveDate;
 
 #[cfg(feature = "server")]
 use crate::backend::{db::get_db};
 
 #[server]
-pub async fn speichere_buchung(datum:NaiveDate, bezeichnung: String, betrag:f64, intervall: BuchungsIntervall) -> Result<i64, ServerFnError> {
+pub async fn speichere_buchung(datum:NaiveDate, bezeichnung: String, betrag:f64, intervall: BuchungsIntervall, art: Art) -> Result<i64, ServerFnError> {
     let db = get_db().await;
 
-    let result = sqlx::query("INSERT INTO buchung (datum, bezeichnung, betrag, intervall) VALUES (?, ?, ?, ?)")
+    let result = sqlx::query("INSERT INTO buchung (datum, bezeichnung, betrag, intervall, art) VALUES (?, ?, ?, ?, ?)")
         .bind(&datum)
         .bind(&bezeichnung)
         .bind(&betrag)
@@ -37,7 +37,7 @@ pub async fn delete_buchung(id:i64) -> Result<(), ServerFnError> {
 pub async fn liste_buchung() -> Result<Vec<Buchung>, ServerFnError> {
     let db = get_db().await;
 
-    let rows = sqlx::query_as::<_, Buchung>("SELECT id, datum, bezeichnung, betrag, intervall FROM buchung")
+    let rows = sqlx::query_as::<_, Buchung>("SELECT id, datum, bezeichnung, betrag, intervall, art FROM buchung")
         .fetch_all(db)
         .await
         .map_err(|e| ServerFnError::new(e.to_string()))?;

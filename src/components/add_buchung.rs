@@ -1,7 +1,7 @@
 
 use dioxus::prelude::*;
 use crate::backend::server_functions::buchung_fns::speichere_buchung;
-use crate::backend::models::buchung::{Buchung, BuchungsIntervall};
+use crate::backend::models::buchung::{Buchung, BuchungsIntervall, Art};
 use chrono::{NaiveDate, Local};
 
 
@@ -11,6 +11,7 @@ pub fn AddBuchung() -> Element {
     let mut bezeichnung = use_signal(|| String::new());
     let mut betrag = use_signal(|| String::new());
     let mut intervall = use_signal(|| BuchungsIntervall::Einmalig);
+    let mut art = use_signal(|| Art::Ausgaben);
 
     let mut list_signal = use_signal(|| Vec::<Buchung>::new()); 
     let nav = use_navigator();
@@ -36,8 +37,7 @@ pub fn AddBuchung() -> Element {
             label { "Intervall" }
             br { }
             select {
-                class: "input", // Falls du CSS-Klassen für Inputs hast
-                // Event-Handler: String vom Select -> Enum konvertieren
+                class: "input",
                 oninput: move |evt| {
                     let neues_intervall = match evt.value().as_str() {
                         "Taeglich" => BuchungsIntervall::Taeglich,
@@ -53,11 +53,25 @@ pub fn AddBuchung() -> Element {
                 option { value: "Taeglich", "Täglich" }
                 option { value: "Woechentlich", "Wöchentlich" }
                 option { value: "Monatlich", "Monatlich" }
-               option { value: "Jaehrlich", "Jährlich" }
+                option { value: "Jaehrlich", "Jährlich" }
             }
             br { }
 
+            label { "Art" }
             br {  }
+            select {  
+                class: "input",
+                oninput: move |evt| {
+                    let neue_art = match evt.value().as_str() {
+                        "Ausgaben" => Art::Ausgaben,
+                        "Einahmen" => Art::Einahmen,
+                    };
+                    art.set(neue_art);
+                },
+                option { value: "Ausgaben", "Ausgaben" }
+                option { value: "Êinahmen", "Einahmen" }
+            }
+            br { }
             label { "Betrag" } 
             br {  }
             input { 
@@ -75,9 +89,10 @@ pub fn AddBuchung() -> Element {
                     let save_bezeichnung = bezeichnung.read().clone();
                     let save_betrag = betrag.read().parse::<f64>().unwrap_or(0.0);
                     let save_intervall = intervall.read().clone();
+                    let save_art = art.read().clone();
 
                     if let Ok(parsed_datum) = NaiveDate::parse_from_str(&save_datum, "%Y-%m-%d") {
-                                match speichere_buchung(parsed_datum, save_bezeichnung.clone(), save_betrag.clone(), save_intervall.clone()).await {
+                                match speichere_buchung(parsed_datum, save_bezeichnung.clone(), save_betrag.clone(), save_intervall.clone(), save_art.clone()).await {
                                     Ok(id) => {
                                         let buchung = Buchung {
                                             id,
@@ -85,6 +100,7 @@ pub fn AddBuchung() -> Element {
                                             bezeichnung: save_bezeichnung,
                                             betrag: save_betrag,
                                             intervall: Some(save_intervall),
+                                            art: Some(save_art),
                                         };
                                         list_signal.write().push(buchung);
                                         nav.push("/buchung");

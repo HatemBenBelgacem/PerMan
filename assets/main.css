@@ -252,7 +252,7 @@ table tr:hover td {
     margin-top: 15px;
 }
 
-input {
+input, select {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid var(--border);
