@@ -343,18 +343,42 @@ button:disabled {
     margin-top: 20px;
 }
 
-/* Jahresübersicht Grid */
+/* Jahresübersicht - Horizontal ohne Umbruch und Lücken */
 .monats_container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+    display: flex;          /* Flexbox nutzen, um Elemente nebeneinander zu legen */
+    flex-wrap: nowrap;      /* Verhindert den Umbruch in eine neue Zeile */
+    gap: 0;                 /* Entfernt den Abstand zwischen den Monaten */
+    overflow-x: auto;       /* Ermöglicht horizontales Scrollen bei Bedarf */
+    width: 100%;
+    padding-bottom: 10px;   /* Platz für den Scrollbalken */
 }
 
 .monats_wrapper {
     background: white;
     border: 1px solid var(--border);
-    border-radius: var(--radius);
+    
+    /* Styling für nahtloses Aneinanderfügen */
+    border-right: none;     /* Rechten Rand entfernen (verhindert doppelte Linien) */
+    border-radius: 0;       /* Ecken nicht abrunden, damit sie bündig sind */
+    
     overflow: hidden;
+    
+    /* Flex-Eigenschaften: wachsen möglich, schrumpfen nicht, Basisbreite */
+    flex: 1 0 120px;       
+    min-width: 120px;       /* Stellt sicher, dass die Tabelle lesbar bleibt */
+}
+
+/* Styling für das allererste Element (ganz links) */
+.monats_wrapper:first-child {
+    border-top-left-radius: var(--radius);
+    border-bottom-left-radius: var(--radius);
+}
+
+/* Styling für das allerletzte Element (ganz rechts) */
+.monats_wrapper:last-child {
+    border-right: 1px solid var(--border); /* Rechten Rand wieder hinzufügen */
+    border-top-right-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
 }
 
 .monats_wrapper table {
@@ -364,6 +388,7 @@ button:disabled {
 .monats_wrapper th {
     background-color: #f8fafc;
     text-align: center;
+    border-bottom: 1px solid var(--border);
 }
 
 .monats_wrapper td {
