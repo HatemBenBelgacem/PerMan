@@ -1,7 +1,7 @@
 
 use dioxus::prelude::*;
 use crate::backend::server_functions::buchung_fns::speichere_buchung;
-use crate::backend::models::buchung::Buchung;
+use crate::backend::models::buchung::{Buchung, BuchungsIntervall};
 use chrono::{NaiveDate, Local};
 
 
@@ -10,7 +10,7 @@ pub fn AddBuchung() -> Element {
     let mut datum = use_signal(|| Local::now().format("%Y-%m-%d").to_string());
     let mut bezeichnung = use_signal(|| String::new());
     let mut betrag = use_signal(|| String::new());
-    let mut sel_periode_id = use_signal(|| 0i64);
+    let mut intervall = use_signal(|| BuchungsIntervall::Einmalig);
 
     let mut list_signal = use_signal(|| Vec::<Buchung>::new()); 
     let nav = use_navigator();
@@ -32,6 +32,31 @@ pub fn AddBuchung() -> Element {
                 value: bezeichnung,
                 oninput: move |e| bezeichnung.set(e.value()),
             }
+
+            label { "Intervall" }
+            br { }
+            select {
+                class: "input", // Falls du CSS-Klassen für Inputs hast
+                // Event-Handler: String vom Select -> Enum konvertieren
+                oninput: move |evt| {
+                    let neues_intervall = match evt.value().as_str() {
+                        "Taeglich" => BuchungsIntervall::Taeglich,
+                        "Woechentlich" => BuchungsIntervall::Woechentlich,
+                        "Monatlich" => BuchungsIntervall::Monatlich,
+                        "Jaehrlich" => BuchungsIntervall::Jaehrlich,
+                        _ => BuchungsIntervall::Einmalig,
+                    };
+                    intervall.set(neues_intervall);
+                },
+                // Die Optionen
+                option { value: "Einmalig", "Einmalig" }
+                option { value: "Taeglich", "Täglich" }
+                option { value: "Woechentlich", "Wöchentlich" }
+                option { value: "Monatlich", "Monatlich" }
+               option { value: "Jaehrlich", "Jährlich" }
+            }
+            br { }
+
             br {  }
             label { "Betrag" } 
             br {  }
@@ -49,16 +74,17 @@ pub fn AddBuchung() -> Element {
                     let save_datum = datum.read().clone();
                     let save_bezeichnung = bezeichnung.read().clone();
                     let save_betrag = betrag.read().parse::<f64>().unwrap_or(0.0);
-                    let save_periode = sel_periode_id.read().clone();
+                    let save_intervall = intervall.read().clone();
 
                     if let Ok(parsed_datum) = NaiveDate::parse_from_str(&save_datum, "%Y-%m-%d") {
-                                match speichere_buchung(parsed_datum, save_bezeichnung.clone(), save_betrag.clone()).await {
+                                match speichere_buchung(parsed_datum, save_bezeichnung.clone(), save_betrag.clone(), save_intervall.clone()).await {
                                     Ok(id) => {
                                         let buchung = Buchung {
                                             id,
                                             datum: parsed_datum,
                                             bezeichnung: save_bezeichnung,
                                             betrag: save_betrag,
+                                            intervall: Some(save_intervall),
                                         };
                                         list_signal.write().push(buchung);
                                         nav.push("/buchung");

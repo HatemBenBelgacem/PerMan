@@ -2,7 +2,8 @@ CREATE TABLE IF NOT EXISTS buchung (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     datum DATE NOT NULL,
     bezeichnung TEXT NOT NULL,
-    betrag FLOAT NOT NULL
+    betrag FLOAT NOT NULL,
+    invervall TEXT NOT NULL
 );
 
  CREATE TABLE IF NOT EXISTS periode (
