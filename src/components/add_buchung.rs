@@ -80,8 +80,6 @@ pub fn AddBuchung() -> Element {
                 value: betrag,
                 oninput: move |e| betrag.set(e.value()),
             } 
-              br {  }
-
             br {  }
 
             button {  class:"btn",
@@ -93,26 +91,26 @@ pub fn AddBuchung() -> Element {
                     let save_art = art.read().clone();
 
                     if let Ok(parsed_datum) = NaiveDate::parse_from_str(&save_datum, "%Y-%m-%d") {
-                                match speichere_buchung(parsed_datum, save_bezeichnung.clone(), save_betrag.clone(), save_intervall.clone(), save_art.clone()).await {
-                                    Ok(id) => {
-                                        let buchung = Buchung {
-                                            id,
-                                            datum: parsed_datum,
-                                            bezeichnung: save_bezeichnung,
-                                            betrag: save_betrag,
-                                            intervall: Some(save_intervall),
-                                            art: Some(save_art),
-                                        };
-                                        list_signal.write().push(buchung);
-                                        nav.push("/buchung");
-                            
-                                    }
-                                    Err(e) => {
-                                    // WICHTIG: Fehler ausgeben!
-                                    println!("FEHLER beim Speichern: {:?}", e); 
-                                    // Optional: Alert im Browser anzeigen (via web-sys oder gloo)
-                                }
-                    }
+                        match speichere_buchung(parsed_datum, save_bezeichnung.clone(), save_betrag.clone(), save_intervall.clone(), save_art.clone()).await {
+                            Ok(id) => {
+                                let buchung = Buchung {
+                                    id,
+                                    datum: parsed_datum,
+                                    bezeichnung: save_bezeichnung,
+                                    betrag: save_betrag,
+                                    intervall: Some(save_intervall),
+                                    art: Some(save_art),
+                                };
+                                list_signal.write().push(buchung);
+                                nav.push("/buchung");
+                    
+                            }
+                            Err(e) => {
+                                // WICHTIG: Fehler ausgeben!
+                                println!("FEHLER beim Speichern: {:?}", e); 
+                                // Optional: Alert im Browser anzeigen (via web-sys oder gloo)
+                            }
+                        }
                     }
                     
                     // HIER: Das Ergebnis loggen

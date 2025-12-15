@@ -23,3 +23,11 @@ CREATE TABLE IF NOT EXISTS benutzer (
     email TEXT NOT NULL,
     passwort TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS abo {
+    id INTEGER PRIMARY KEY UNIQUE,
+    bezeichnung TEXT NOT NULL,
+    beginn DATE NOT NULL,
+    dauer FLOAT NOT NULL,
+    kuend_frist FLOAT NOT NULL
+};

@@ -1,9 +1,9 @@
 use dioxus::prelude::*;
 
 use components::{
-    add_buchung::AddBuchung, add_periode::AddPeriode, app_layout::AppLayout, home::Home,
-    jahresuebersicht::Jahresuebersicht, liste_buchung::BuchungListe, liste_periode::PeriodenListe,
-    login::LoginPage, register::RegisterPage, 
+    add_buchung::AddBuchung, app_layout::AppLayout, home::Home,
+    jahresuebersicht::Jahresuebersicht, liste_buchung::BuchungListe,
+    login::LoginPage, register::RegisterPage, add_abo::AddAbo,
 };
 
 use crate::backend::server_functions::benutzer_fns::existiert_benutzer;
@@ -29,12 +29,10 @@ enum Route {
         BuchungListe {},
         #[route("/buchung/add")]
         AddBuchung{},
-        #[route("/periode")]
-        PeriodenListe{},
-        #[route("/periode/add")]
-        AddPeriode{},
         #[route("/jahresuebersicht")]
-        Jahresuebersicht{}
+        Jahresuebersicht{},
+        #[route("/abo/add")]
+        AddAbo
     
 }
 
