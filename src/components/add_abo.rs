@@ -7,7 +7,7 @@ use chrono::{NaiveDate, Local};
 #[component]
 pub fn AddAbo() -> Element {
     let mut bezeichnung = use_signal(|| String::new());
-    let mut begin = use_signal(|| Local::now().format("%Y-%m-%d").to_string());
+    let mut beginn = use_signal(|| Local::now().format("%Y-%m-%d").to_string());
     let mut dauer = use_signal(|| String::new());
     let mut knd_frist = use_signal(|| String::new());
     let nav = use_navigator();
@@ -28,8 +28,8 @@ pub fn AddAbo() -> Element {
             br{}
             input{
                 r#type:"date",
-                value:begin,
-                oninput: move |e| begin.set(e.value()),
+                value:beginn,
+                oninput: move |e| beginn.set(e.value()),
             }
             br{}
             label{"Dauer"}
@@ -53,28 +53,29 @@ pub fn AddAbo() -> Element {
                 class:"btn",
                 onclick: move |_| async move {
                     let save_bezeichnung = bezeichnung.read().clone();
-                    let save_begin = begin.read().clone();
-                    let save_dauer = dauer.read().clone();
-                    let save_knd_frist = knd_frist.read().clone();
+                    let save_beginn = beginn.read().clone();
+                    let save_dauer = dauer.read().parse::<f64>().unwrap_or(0.0);
+                    let save_knd_frist = knd_frist.read().parse::<f64>().unwrap_or(0.0);
 
-                    if let Ok(parsed_datum) = NaiveDate::parse_from_str(&save_begin, "%Y-%m-%d") {
+                    if let Ok(parsed_datum) = NaiveDate::parse_from_str(&save_beginn, "%Y-%m-%d") {
                         match speichere_abo(save_bezeichnung.clone(), parsed_datum, save_dauer.clone(), save_knd_frist.clone()).await {
                             Ok(new_uuid) => {
                                 let abo = Abo {
                                     id: new_uuid,
                                     bezeichnung: save_bezeichnung,
-                                    begin: parsed_datum,
+                                    beginn: parsed_datum,
                                     dauer: save_dauer,
                                     knd_frist: save_knd_frist,
                                 };
                                 list_signal.write().push(abo);
-                                nav.push("/")
+                                nav.push("/");
                             }
                             Err(e) => {
-                                println!("Fehler: {:?}", e);
+                                println!("FEHLER beim Speichern: {:?}", e);
                             }
                         }
-                    }    
+                    }
+                    bezeichnung.set(String::new());    
                 },
                 disabled: if bezeichnung.read().trim().is_empty() { true } else {false},
                 "Speichern"

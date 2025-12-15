@@ -8,9 +8,9 @@ use sqlx::FromRow;
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(feature = "server", derive(FromRow))]
 pub struct Abo {
-    id: Uuid,
-    bezeichnung: String,
-    beginn: NaiveDate,
-    dauer: f64,
-    knd_frist:f64,
+    pub id: Uuid,
+    pub bezeichnung: String,
+    pub beginn: NaiveDate,
+    pub dauer: f64,
+    pub knd_frist:f64,
 }

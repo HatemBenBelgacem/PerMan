@@ -1,15 +1,18 @@
 use dioxus::prelude::*;
 use chrono::prelude::*;
+use uuid::Uuid;
 use crate::backend::models::abo::Abo;
 
 #[cfg(feature = "server")]
 use crate::backend::db::get_db;
 
 #[server]
-pub async fn speichere_abo(bezeichnung: String, beginn: NaiveDate, dauer: f64, knd_frist:f64) -> Result<i64, ServerFnError>{
+pub async fn speichere_abo(bezeichnung: String, beginn: NaiveDate, dauer: f64, knd_frist:f64) -> Result<Uuid, ServerFnError>{
     let db = get_db().await;
+    let new_id = Uuid::new_v4();
 
-    let result = sqlx::query("INSERT INTO abo (bezeichnung, beginn, dauer, knd_frist) VALUES (?, ?, ?, ?)")
+    let result = sqlx::query("INSERT INTO abo (id,bezeichnung, beginn, dauer, knd_frist) VALUES (?, ?, ?, ?)")
+        .bind(&new_id)
         .bind(&bezeichnung)
         .bind(&beginn)
         .bind(&dauer)
@@ -17,7 +20,7 @@ pub async fn speichere_abo(bezeichnung: String, beginn: NaiveDate, dauer: f64, k
         .execute(db)
         .await
         .unwrap();
-    Ok(result.last_insert_rowid())
+    Ok(new_id)
 }
 
 #[server]

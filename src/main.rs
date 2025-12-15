@@ -32,7 +32,7 @@ enum Route {
         #[route("/jahresuebersicht")]
         Jahresuebersicht{},
         #[route("/abo/add")]
-        AddAbo
+        AddAbo{}
     
 }
 

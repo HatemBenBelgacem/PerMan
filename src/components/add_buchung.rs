@@ -7,7 +7,7 @@ use chrono::{NaiveDate, Local};
 
 #[component]
 pub fn AddBuchung() -> Element {
-    let mut datum = use_signal(|| Local::now().format("%d-%m-%Y").to_string());
+    let mut datum = use_signal(|| Local::now().format("%Y-%m-%d").to_string());
     let mut bezeichnung = use_signal(|| String::new());
     let mut betrag = use_signal(|| String::new());
     let mut intervall = use_signal(|| BuchungsIntervall::Einmalig);
