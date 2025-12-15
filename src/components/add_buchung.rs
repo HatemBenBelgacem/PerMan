@@ -7,7 +7,7 @@ use chrono::{NaiveDate, Local};
 
 #[component]
 pub fn AddBuchung() -> Element {
-    let mut datum = use_signal(|| Local::now().format("%Y-%m-%d").to_string());
+    let mut datum = use_signal(|| Local::now().format("%d-%m-%Y").to_string());
     let mut bezeichnung = use_signal(|| String::new());
     let mut betrag = use_signal(|| String::new());
     let mut intervall = use_signal(|| BuchungsIntervall::Einmalig);
@@ -65,11 +65,12 @@ pub fn AddBuchung() -> Element {
                     let neue_art = match evt.value().as_str() {
                         "Ausgaben" => Art::Ausgaben,
                         "Einahmen" => Art::Einahmen,
+                        _ => Art::Ausgaben,
                     };
                     art.set(neue_art);
                 },
                 option { value: "Ausgaben", "Ausgaben" }
-                option { value: "Êinahmen", "Einahmen" }
+                option { value: "Einahmen", "Einahmen" }
             }
             br { }
             label { "Betrag" } 

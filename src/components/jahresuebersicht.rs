@@ -1,7 +1,6 @@
 use dioxus::prelude::*;
 
 use crate::backend::server_functions::buchung_fns::liste_buchung;
-use crate::backend::{server_functions::buchung_fns::total_buchung};
 use crate::backend::models::buchung::BuchungsIntervall;
 
 #[component]
@@ -16,12 +15,15 @@ pub fn Jahresuebersicht() -> Element {
                     div {"Keine Buchung"}
                 } else {
                     div { class:"monats_container",
+                        
+                        
                         for (index_str, m) in monate {
                             div { class:"monats_wrapper",
                                table { class:"table_monate",
                                     thead {
                                         tr {
                                             th { "{m}" }
+                                            
                                         }
                                     }
                                     tbody {

@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS buchung (
     datum DATE NOT NULL,
     bezeichnung TEXT NOT NULL,
     betrag FLOAT NOT NULL,
-    intervall TEXT NOT NULL
+    intervall TEXT NOT NULL,
+    art TEXT NOT NULL
 );
 
  CREATE TABLE IF NOT EXISTS periode (
