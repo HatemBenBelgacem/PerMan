@@ -11,7 +11,7 @@ pub async fn speichere_abo(bezeichnung: String, beginn: NaiveDate, dauer: f64, k
     let db = get_db().await;
     let new_id = Uuid::new_v4();
 
-    let result = sqlx::query("INSERT INTO abo (id,bezeichnung, beginn, dauer, knd_frist) VALUES (?, ?, ?, ?)")
+    let result = sqlx::query("INSERT INTO abo (id,bezeichnung, beginn, dauer, knd_frist) VALUES (?, ?, ?, ?, ?)")
         .bind(&new_id)
         .bind(&bezeichnung)
         .bind(&beginn)

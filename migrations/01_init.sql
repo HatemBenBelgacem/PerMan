@@ -29,5 +29,5 @@ CREATE TABLE IF NOT EXISTS abo (
     bezeichnung TEXT NOT NULL,
     beginn DATE NOT NULL,
     dauer FLOAT NOT NULL,
-    kuend_frist FLOAT NOT NULL
+    knd_frist FLOAT NOT NULL
 );
