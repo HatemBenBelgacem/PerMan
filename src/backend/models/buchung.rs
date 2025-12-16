@@ -33,11 +33,11 @@ pub enum BuchungsIntervall {
 impl fmt::Display for BuchungsIntervall {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            BuchungsIntervall::Taeglich => write!(f, "Täglich"),
-            BuchungsIntervall::Woechentlich => write!(f, "Wöchentlich"),
-            BuchungsIntervall::Monatlich => write!(f, "Monatlich"),
-            BuchungsIntervall::Jaehrlich => write!(f, "Jährlich"),
-            BuchungsIntervall::Einmalig => write!(f, "Einmalig"),
+            BuchungsIntervall::Taeglich => write!(f, "taeglich"),
+            BuchungsIntervall::Woechentlich => write!(f, "woechentlich"),
+            BuchungsIntervall::Monatlich => write!(f, "monatlich"),
+            BuchungsIntervall::Jaehrlich => write!(f, "Jaehrlich"),
+            BuchungsIntervall::Einmalig => write!(f, "einmalig"),
         }
     }
 }
@@ -54,8 +54,8 @@ pub enum Art {
 impl fmt::Display for Art {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Art::Ausgaben => write!(f, "Ausgaben"),
-            Art::Einahmen => write!(f, "Einahmen"),
+            Art::Ausgaben => write!(f, "ausgaben"),
+            Art::Einahmen => write!(f, "einahmen"),
         }
     }
 }

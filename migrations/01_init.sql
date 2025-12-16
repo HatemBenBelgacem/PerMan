@@ -1,11 +1,13 @@
--- Tabelle Buchung
+CREATE TYPE buchungs_intervall AS ENUM ('taeglich', 'woechentlich', 'monatlich', 'jaehrlich', 'einmalig');
+CREATE TYPE art_enum AS ENUM ('einahmen', 'ausgaben'); -- 'art' ist ein riskanter Name, besser 'art_type' oder ähnlich
+
 CREATE TABLE IF NOT EXISTS buchung (
-    id SERIAL PRIMARY KEY, -- 'INTEGER PRIMARY KEY AUTOINCREMENT' -> 'SERIAL PRIMARY KEY'
+    id SERIAL PRIMARY KEY,
     datum DATE NOT NULL,
     bezeichnung TEXT NOT NULL,
-    betrag DOUBLE PRECISION NOT NULL, -- 'FLOAT' ist ok, 'DOUBLE PRECISION' ist expliziter in Postgres
-    intervall TEXT NOT NULL,
-    art TEXT NOT NULL
+    betrag DOUBLE PRECISION NOT NULL,
+    intervall buchungs_intervall NOT NULL, -- Hier den neuen Typ nutzen
+    art art_enum NOT NULL                  -- Hier den neuen Typ nutzen
 );
 
 -- Tabelle Periode
