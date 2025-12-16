@@ -60,7 +60,7 @@ pub fn AddBuchung() -> Element {
             label { "Art" }
             br {  }
             select {  
-                class: "input",
+                class: "input .material-symbols-outlined",
                 oninput: move |evt| {
                     let neue_art = match evt.value().as_str() {
                         "Ausgaben" => Art::Ausgaben,

@@ -1,9 +1,20 @@
 /* Google Fonts Import für modernen Look */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=keyboard_double_arrow_right');
+
+
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
 
 :root {
     /* Farbpalette - Modernes Blau/Grau Thema */
-    --primary: #4f46e5;       /* Indigo */
+    --primary: #7be227;       /* Indigo */
     --primary-hover: #4338ca;
     --secondary: #64748b;     /* Slate Grey */
     --background: #f1f5f9;    /* Helles Grau/Blau für Hintergrund */
@@ -123,7 +134,7 @@ details > summary::-webkit-details-marker {
 
 /* Eigener Pfeil mit CSS */
 details > summary::after {
-    content: "›";
+    content: "E";
     font-size: 1.2rem;
     line-height: 0.8;
     transition: transform 0.2s;
