@@ -50,7 +50,7 @@ pub fn AboListe() -> Element {
                                             }
                                         td{"{a.dauer}"}
                                         td{"{a.knd_frist}"}
-                                        td { class:"aktion" }
+                                        td { class:"aktion" } 
                                     }
                                 }
                             }

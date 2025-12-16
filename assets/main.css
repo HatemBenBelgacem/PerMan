@@ -395,3 +395,44 @@ button:disabled {
     text-align: right;
     border-bottom: 1px solid var(--border);
 }
+
+/* Responsive Design Anpassungen */
+@media (max-width: 768px) {
+    /* Layout von 2 Spalten auf 1 Spalte ändern */
+    .container {
+        grid-template-areas: 
+            "header"
+            "menu"
+            "content";
+        grid-template-columns: 1fr;
+        grid-template-rows: 60px auto 1fr;
+    }
+
+    /* Menü etwas kompakter gestalten */
+    .container div.menu {
+        padding: 10px 20px;
+    }
+
+    /* Weniger Padding für den Content-Bereich */
+    .container div.content {
+        padding: 15px;
+    }
+
+    /* Wichtig: Tabellen-Container scrollbar machen, damit Layout nicht bricht */
+    .liste {
+        overflow-x: auto;
+        padding: 15px;
+    }
+
+    /* Buttons untereinander stapeln für bessere Touch-Bedienung */
+    .functions {
+        flex-direction: column;
+    }
+
+    .functions .btn, button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+        justify-content: center;
+    }
+}
