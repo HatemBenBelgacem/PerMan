@@ -9,23 +9,26 @@ use crate::backend::{db::get_db};
 pub async fn speichere_buchung(datum:NaiveDate, bezeichnung: String, betrag:f64, intervall: BuchungsIntervall, art: Art) -> Result<i64, ServerFnError> {
     let db = get_db().await;
 
-    let result = sqlx::query("INSERT INTO buchung (datum, bezeichnung, betrag, intervall, art) VALUES (?, ?, ?, ?, ?)")
+    // KORREKTUR: PostgreSQL nutzt $1, $2... und RETURNING id
+    let id: i32 = sqlx::query_scalar("INSERT INTO buchung (datum, bezeichnung, betrag, intervall, art) VALUES ($1, $2, $3, $4, $5) RETURNING id")
         .bind(&datum)
         .bind(&bezeichnung)
         .bind(&betrag)
         .bind(&intervall)
         .bind(&art)
-        .execute(db)
+        .fetch_one(db)
         .await
-        .unwrap();
-    Ok(result.last_insert_rowid())
+        .map_err(|e| ServerFnError::new(e.to_string()))?;
+
+    Ok(id as i64)
 }
 
 #[server]
 pub async fn delete_buchung(id:i64) -> Result<(), ServerFnError> {
     let db = get_db().await;
 
-    sqlx::query("DELETE FROM buchung WHERE id = ?")
+    // KORREKTUR: Platzhalter $1 statt ?
+    sqlx::query("DELETE FROM buchung WHERE id = $1")
         .bind(id)
         .execute(db)
         .await
@@ -38,6 +41,7 @@ pub async fn delete_buchung(id:i64) -> Result<(), ServerFnError> {
 pub async fn liste_buchung() -> Result<Vec<Buchung>, ServerFnError> {
     let db = get_db().await;
 
+    // Keine Parameter, Syntax ist ok
     let rows = sqlx::query_as::<_, Buchung>("SELECT id, datum, bezeichnung, betrag, intervall, art FROM buchung WHERE art = 'ausgaben'")
         .fetch_all(db)
         .await
@@ -50,6 +54,7 @@ pub async fn liste_buchung() -> Result<Vec<Buchung>, ServerFnError> {
 pub async fn liste_buchung_einahmen() -> Result<Vec<Buchung>, ServerFnError> {
     let db = get_db().await;
 
+    // Keine Parameter, Syntax ist ok
     let rows = sqlx::query_as::<_, Buchung>("SELECT id, datum, bezeichnung, betrag, intervall, art FROM buchung WHERE art = 'einahmen'")
         .fetch_all(db)
         .await
@@ -58,27 +63,23 @@ pub async fn liste_buchung_einahmen() -> Result<Vec<Buchung>, ServerFnError> {
     Ok(rows)
 }
 
-
-
 #[server]
-// 1. Rückgabetyp ändern: Wir erwarten eine Zahl (f64), keine Liste von Buchung
 pub async fn total_buchung() -> Result<f64, ServerFnError> {
     let db = get_db().await;
 
     let summe: Option<f64> = sqlx::query_scalar("SELECT SUM(betrag) FROM buchung WHERE art = 'ausgaben'")
-        .fetch_one(db) // fetch_one, weil wir nur ein Ergebnis erwarten
+        .fetch_one(db)
         .await
         .map_err(|e| ServerFnError::new(e.to_string()))?;
     Ok(summe.unwrap_or(0.0))
 }
 
 #[server]
-// 1. Rückgabetyp ändern: Wir erwarten eine Zahl (f64), keine Liste von Buchung
 pub async fn total_buchung_einahmen() -> Result<f64, ServerFnError> {
     let db = get_db().await;
 
     let summe: Option<f64> = sqlx::query_scalar("SELECT SUM(betrag) FROM buchung WHERE art = 'einahmen'")
-        .fetch_one(db) // fetch_one, weil wir nur ein Ergebnis erwarten
+        .fetch_one(db)
         .await
         .map_err(|e| ServerFnError::new(e.to_string()))?;
     Ok(summe.unwrap_or(0.0))

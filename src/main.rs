@@ -14,6 +14,7 @@ mod icons;
 
 static CSS: Asset = asset!("/assets/main.css");
 
+// ... Route Enum bleibt gleich ...
 #[derive(Debug, Clone, Routable, PartialEq)]
 #[rustfmt::skip]
 enum Route {
@@ -35,20 +36,23 @@ enum Route {
         AboListe{},
         #[route("/abo/add")]
         AddAbo{}
-    
 }
 
 fn main() {
+    // NEU: Umgebungsvariablen laden (nur auf dem Server)
+    #[cfg(feature = "server")]
+    {
+        dotenv::dotenv().ok();
+    }
+
     dioxus::launch(App);
 }
 
-
-
 #[component]
 fn App() -> Element {
-    use_context_provider(|| Signal::new(false)); // is_logged_in status
+    // ... Rest bleibt gleich ...
+    use_context_provider(|| Signal::new(false)); 
     
-    // Server Health Check beim Start
     let check_users = use_resource(move || async move {
         existiert_benutzer().await
     });
@@ -58,8 +62,6 @@ fn App() -> Element {
         
         match &*check_users.read_unchecked() {
             Some(Ok(_)) => {
-                // Server läuft -> Router starten (ohne spezielle Config)
-                // Die Logik für den Redirect passiert jetzt im AppLayout
                 rsx! { Router::<Route> {} }
             },
             Some(Err(e)) => rsx! { div { "Server Fehler: {e}" } },

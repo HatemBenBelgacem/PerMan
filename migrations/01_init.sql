@@ -1,33 +1,38 @@
+-- Tabelle Buchung
 CREATE TABLE IF NOT EXISTS buchung (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY, -- 'INTEGER PRIMARY KEY AUTOINCREMENT' -> 'SERIAL PRIMARY KEY'
     datum DATE NOT NULL,
     bezeichnung TEXT NOT NULL,
-    betrag FLOAT NOT NULL,
+    betrag DOUBLE PRECISION NOT NULL, -- 'FLOAT' ist ok, 'DOUBLE PRECISION' ist expliziter in Postgres
     intervall TEXT NOT NULL,
     art TEXT NOT NULL
 );
 
- CREATE TABLE IF NOT EXISTS periode (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+-- Tabelle Periode
+CREATE TABLE IF NOT EXISTS periode (
+    id SERIAL PRIMARY KEY,
     bezeichnung DATE NOT NULL
 );
 
+-- Tabelle Typ
 CREATE TABLE IF NOT EXISTS typ (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    bezeichnung DATE NOT NULL
+    id SERIAL PRIMARY KEY,
+    bezeichnung DATE NOT NULL -- Prüfen Sie, ob hier wirklich DATE gemeint ist oder TEXT?
 );
 
+-- Tabelle Benutzer
 CREATE TABLE IF NOT EXISTS benutzer (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     benutzername TEXT NOT NULL,
     email TEXT NOT NULL,
     passwort TEXT NOT NULL
 );
 
+-- Tabelle Abo
 CREATE TABLE IF NOT EXISTS abo (
-    id TEXT PRIMARY KEY UNIQUE,
+    id TEXT PRIMARY KEY UNIQUE, -- TEXT als ID ist okay (z.B. für UUIDs)
     bezeichnung TEXT NOT NULL,
     beginn DATE NOT NULL,
-    dauer FLOAT NOT NULL,
-    knd_frist FLOAT NOT NULL
+    dauer DOUBLE PRECISION NOT NULL,
+    knd_frist DOUBLE PRECISION NOT NULL
 );
