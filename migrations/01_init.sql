@@ -1,13 +1,15 @@
-CREATE TYPE buchungs_intervall AS ENUM ('taeglich', 'woechentlich', 'monatlich', 'jaehrlich', 'einmalig');
-CREATE TYPE art_enum AS ENUM ('einahmen', 'ausgaben'); -- 'art' ist ein riskanter Name, besser 'art_type' oder ähnlich
+
+
+CREATE TYPE intervall AS ENUM ('taeglich', 'woechentlich', 'monatlich', 'jaehrlich', 'einmalig');
+CREATE TYPE art AS ENUM ('einahmen', 'ausgaben'); -- 'art' ist ein riskanter Name, besser 'art_type' oder ähnlich
 
 CREATE TABLE IF NOT EXISTS buchung (
     id SERIAL PRIMARY KEY,
     datum DATE NOT NULL,
     bezeichnung TEXT NOT NULL,
     betrag DOUBLE PRECISION NOT NULL,
-    intervall buchungs_intervall NOT NULL, -- Hier den neuen Typ nutzen
-    art art_enum NOT NULL                  -- Hier den neuen Typ nutzen
+    intervall intervall NOT NULL, -- Hier den neuen Typ nutzen
+    art art NOT NULL                  -- Hier den neuen Typ nutzen
 );
 
 -- Tabelle Periode

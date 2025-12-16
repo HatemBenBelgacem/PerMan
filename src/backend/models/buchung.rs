@@ -22,6 +22,7 @@ pub struct Buchung {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(feature = "server", derive(sqlx::Type))] 
 #[cfg_attr(feature = "server", sqlx(rename_all = "lowercase"))]
+#[cfg_attr(feature = "server", sqlx(type_name = "ntervall"))]
 pub enum BuchungsIntervall {
     Taeglich,
     Woechentlich,
@@ -46,6 +47,7 @@ impl fmt::Display for BuchungsIntervall {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(feature = "server", derive(sqlx::Type))] 
 #[cfg_attr(feature = "server", sqlx(rename_all = "lowercase"))]
+#[cfg_attr(feature = "server", sqlx(type_name = "art"))]
 pub enum Art {
     Einahmen,
     Ausgaben,
