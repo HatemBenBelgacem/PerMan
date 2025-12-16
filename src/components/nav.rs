@@ -14,7 +14,7 @@ pub fn Nav() -> Element {
                 summary { "Finanzen" }
                 p { Link { to: "/buchung", "Budgetübersicht" } }
                 p { Link { to: "/jahresuebersicht", "Jahresübersicht" } }
-                p { Link { to: "/abo/add", "Abo hinzufügen" } }
+                p { Link { to: "/abo", "Aboübersicht" } }
             }
             details {  
                 summary { "Aufgaben" }

@@ -45,3 +45,4 @@ pub async fn list_abo() -> Result<Vec<Abo>, ServerFnError> {
         .map_err(|e| ServerFnError::new(e.to_string()))?;
     Ok(rows)
 }
+

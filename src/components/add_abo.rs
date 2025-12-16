@@ -68,7 +68,7 @@ pub fn AddAbo() -> Element {
                                     knd_frist: save_knd_frist,
                                 };
                                 list_signal.write().push(abo);
-                                nav.push("/");
+                                nav.push("/abo");
                             }
                             Err(e) => {
                                 println!("FEHLER beim Speichern: {:?}", e);
