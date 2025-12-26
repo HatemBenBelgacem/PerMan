@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 #[cfg(feature = "server")]
 use sqlx::FromRow;
@@ -9,7 +10,7 @@ use std::fmt;
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(feature = "server", derive(FromRow))]
 pub struct Buchung {
-    pub id: i64,
+    pub id: Uuid,
     pub datum: NaiveDate,
     pub bezeichnung: String,
     pub betrag: f64,
@@ -20,9 +21,10 @@ pub struct Buchung {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[cfg_attr(feature = "server", derive(sqlx::Type))] 
+#[cfg_attr(feature = "server", derive(sqlx::Type))]
+// WICHTIG: Diese Zeile muss hinzugefügt werden, damit Rust den SQL-Typ 'buchungs_intervall' findet
+#[cfg_attr(feature = "server", sqlx(type_name = "intervall"))] 
 #[cfg_attr(feature = "server", sqlx(rename_all = "lowercase"))]
-#[cfg_attr(feature = "server", sqlx(type_name = "ntervall"))]
 pub enum BuchungsIntervall {
     Taeglich,
     Woechentlich,
@@ -37,7 +39,7 @@ impl fmt::Display for BuchungsIntervall {
             BuchungsIntervall::Taeglich => write!(f, "taeglich"),
             BuchungsIntervall::Woechentlich => write!(f, "woechentlich"),
             BuchungsIntervall::Monatlich => write!(f, "monatlich"),
-            BuchungsIntervall::Jaehrlich => write!(f, "Jaehrlich"),
+            BuchungsIntervall::Jaehrlich => write!(f, "jaehrlich"),
             BuchungsIntervall::Einmalig => write!(f, "einmalig"),
         }
     }
@@ -45,9 +47,10 @@ impl fmt::Display for BuchungsIntervall {
 
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[cfg_attr(feature = "server", derive(sqlx::Type))] 
-#[cfg_attr(feature = "server", sqlx(rename_all = "lowercase"))]
+#[cfg_attr(feature = "server", derive(sqlx::Type))]
+// WICHTIG: Diese Zeile muss hinzugefügt werden, da der Typ in der DB 'art_enum' heißt
 #[cfg_attr(feature = "server", sqlx(type_name = "art"))]
+#[cfg_attr(feature = "server", sqlx(rename_all = "lowercase"))]
 pub enum Art {
     Einahmen,
     Ausgaben,

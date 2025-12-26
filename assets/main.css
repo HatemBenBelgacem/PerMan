@@ -134,7 +134,7 @@ details > summary::-webkit-details-marker {
 
 /* Eigener Pfeil mit CSS */
 details > summary::after {
-    content: "E";
+    content: "^";
     font-size: 1.2rem;
     line-height: 0.8;
     transition: transform 0.2s;

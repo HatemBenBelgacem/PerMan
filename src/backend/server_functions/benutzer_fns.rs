@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-
+use uuid::Uuid;
 #[cfg(feature = "server")]
 use crate::backend::db::get_db;
 
@@ -15,11 +15,13 @@ pub async fn existiert_benutzer() -> Result<bool, ServerFnError> {
 }
 
 #[server]
-pub async fn speichere_benutzer(benutzername: String, email: String, passwort:String) -> Result<i64, ServerFnError> {
+pub async fn speichere_benutzer(benutzername: String, email: String, passwort:String) -> Result<Uuid, ServerFnError> {
     let db = get_db().await;
+    let new_id = Uuid::new_v4();
 
     // KORREKTUR: $1, $2, $3 und RETURNING id
-    let id: i32 = sqlx::query_scalar("INSERT INTO benutzer (benutzername, email, passwort) VALUES ($1, $2, $3) RETURNING id")
+    let id: Uuid = sqlx::query_scalar("INSERT INTO benutzer (id, benutzername, email, passwort) VALUES ($1, $2, $3, $4) RETURNING id")
+        .bind(&new_id)
         .bind(&benutzername)
         .bind(&email)
         .bind(&passwort)
@@ -27,7 +29,7 @@ pub async fn speichere_benutzer(benutzername: String, email: String, passwort:St
         .await
         .map_err(|e| ServerFnError::new(e.to_string()))?; 
         
-    Ok(id as i64)
+    Ok(id)
 }
 
 

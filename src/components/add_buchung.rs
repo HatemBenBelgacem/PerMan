@@ -92,9 +92,9 @@ pub fn AddBuchung() -> Element {
 
                     if let Ok(parsed_datum) = NaiveDate::parse_from_str(&save_datum, "%Y-%m-%d") {
                         match speichere_buchung(parsed_datum, save_bezeichnung.clone(), save_betrag.clone(), save_intervall.clone(), save_art.clone()).await {
-                            Ok(id) => {
+                            Ok(new_uuid) => {
                                 let buchung = Buchung {
-                                    id,
+                                    id: new_uuid,
                                     datum: parsed_datum,
                                     bezeichnung: save_bezeichnung,
                                     betrag: save_betrag,
