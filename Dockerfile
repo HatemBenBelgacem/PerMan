@@ -1,10 +1,14 @@
 # Stage 1: Build
 FROM rustlang/rust:nightly AS builder
 
-# Notwendige Abhängigkeiten
-RUN apt-get update && apt-get install -y pkg-config libssl-dev curl
+# Notwendige System-Abhängigkeiten installieren
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Installiert cargo-binstall und die Dioxus CLI
+# Dioxus CLI via binstall (schneller als kompilieren)
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 RUN cargo binstall --no-confirm dioxus-cli@0.6.0
 RUN rustup target add wasm32-unknown-unknown
@@ -12,10 +16,11 @@ RUN rustup target add wasm32-unknown-unknown
 WORKDIR /usr/src/app
 COPY . .
 
-# SQLx Offline-Modus
+# SQLx Offline-Modus & Index Update
 ENV SQLX_OFFLINE=true
+RUN cargo update
 
-# Fullstack-Build (Dioxus 0.6 baut automatisch Client & Server)
+# Fullstack-Build für Dioxus 0.6
 RUN dx build --release
 
 # Stage 2: Runtime
@@ -24,8 +29,7 @@ RUN apt-get update && apt-get install -y libssl-dev ca-certificates && rm -rf /v
 
 WORKDIR /usr/local/bin
 
-# Kopiere die Binary und das öffentliche Asset-Verzeichnis aus dem dist-Ordner
-# Ersetze "per-man" durch den Namen deiner Binary, falls er abweicht
+# Kopiere die Binary und Assets aus dem dist-Ordner
 COPY --from=builder /usr/src/app/dist/per-man /usr/local/bin/per-man-server
 COPY --from=builder /usr/src/app/dist/public /usr/local/bin/public
 COPY --from=builder /usr/src/app/migrations /usr/local/bin/migrations
