@@ -15,9 +15,9 @@ sqlx = { version="0.8.3", features = [ "postgres", "runtime-tokio", "chrono", "u
 tokio = { version = "1.48.0", features = ["full"], optional = true }
 icons = { version = "0.X", features = ["dioxus"] }
 num-format = "0.4"
-uuid = { version = "1.19.0", features = ["v4", "serde"] }
+uuid = { version = "1.11.0", features = ["v4", "serde"] }
 [target.'cfg(target_arch = "wasm32")'.dependencies]
-getrandom = { version = "0.3.4", features = ["js"] }
+getrandom = { version = "0.2", features = ["js"] }
 dotenv = "0.15"
 
 [features]
