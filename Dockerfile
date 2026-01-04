@@ -3,7 +3,14 @@ FROM rustlang/rust:nightly AS builder
 
 # Notwendige Abhängigkeiten für Dioxus und SQLx
 RUN apt-get update && apt-get install -y pkg-config libssl-dev
-RUN cargo install dioxus-cli --version 0.6.0
+# Installiert curl für den Download und libssl für die Ausführung
+RUN apt-get update && apt-get install -y pkg-config libssl-dev curl
+
+# Installiert cargo-binstall, um fertige Binärdateien zu laden
+RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+
+# Installiert die Dioxus CLI blitzschnell als fertige Binary
+RUN cargo binstall --no-confirm dioxus-cli@0.6.0
 RUN rustup target add wasm32-unknown-unknown
 
 WORKDIR /usr/src/app
