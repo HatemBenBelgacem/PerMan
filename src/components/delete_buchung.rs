@@ -1,13 +1,13 @@
 use dioxus::prelude::*;
 use crate::icons::{Icon, mdi_light};
-use uuid::Uuid;
+
 use crate::backend::server_functions::buchung_fns::delete_buchung;
 use crate::backend::models::buchung::Buchung;
 
 #[component]
-pub fn Delete(mut buchung_resource: Resource<Result<Vec<Buchung>, ServerFnError>>, id:Uuid) -> Element {
+pub fn Delete(mut buchung_resource: Resource<Result<Vec<Buchung>, ServerFnError>>, id:String) -> Element {
     rsx!{
-        button { 
+        button {
             onclick: move |_| async move {
                 match delete_buchung(id).await {
                     Ok(_) => {
@@ -16,7 +16,7 @@ pub fn Delete(mut buchung_resource: Resource<Result<Vec<Buchung>, ServerFnError>
                     Err(e) => {}
                 }
             },
-            Icon{data:mdi_light::Delete}
+            Icon { data: mdi_light::Delete }
         }
     }
 }

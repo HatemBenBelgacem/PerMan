@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
 #[cfg(feature = "server")]
 use sqlx::FromRow;
@@ -10,7 +9,7 @@ use std::fmt;
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(feature = "server", derive(FromRow))]
 pub struct Buchung {
-    pub id: Uuid,
+    pub id: String,
     pub datum: NaiveDate,
     pub bezeichnung: String,
     pub betrag: f64,

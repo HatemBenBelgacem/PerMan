@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-use uuid::Uuid;
+
 use crate::backend::models::buchung::{Buchung, BuchungsIntervall, Art};
 use chrono::NaiveDate;
 
@@ -7,13 +7,11 @@ use chrono::NaiveDate;
 use crate::backend::{db::get_db};
 
 #[server]
-pub async fn speichere_buchung(datum:NaiveDate, bezeichnung: String, betrag:f64, intervall: BuchungsIntervall, art: Art) -> Result<Uuid, ServerFnError> {
+pub async fn speichere_buchung(datum:NaiveDate, bezeichnung: String, betrag:f64, intervall: BuchungsIntervall, art: Art) -> Result<String, ServerFnError> {
     let db = get_db().await;
-    let new_id = Uuid::new_v4();
 
     // KORREKTUR: PostgreSQL nutzt $1, $2... und RETURNING id
-    let id: Uuid = sqlx::query_scalar("INSERT INTO buchung (id, datum, bezeichnung, betrag, intervall, art) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id")
-        .bind(&new_id)
+    let id: String = sqlx::query_scalar("INSERT INTO buchung (datum, bezeichnung, betrag, intervall, art) VALUES ($1, $2, $3, $4, $5) RETURNING id")
         .bind(&datum)
         .bind(&bezeichnung)
         .bind(&betrag)
@@ -27,7 +25,7 @@ pub async fn speichere_buchung(datum:NaiveDate, bezeichnung: String, betrag:f64,
 }
 
 #[server]
-pub async fn delete_buchung(id:Uuid) -> Result<(), ServerFnError> {
+pub async fn delete_buchung(id:String) -> Result<(), ServerFnError> {
     let db = get_db().await;
 
     // KORREKTUR: Platzhalter $1 statt ?
