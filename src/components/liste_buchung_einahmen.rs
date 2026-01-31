@@ -36,54 +36,53 @@ fn format_betrag(wert: f64) -> String {
                     } else {
                         table {
 
+        
+
+                            // 2. Fehler beim Laden vom Server (Some -> Err)
+
+                            // 3. Daten werden noch geladen (None)
+                            // Hier lag der Fehler: Es ist einfach "None", nicht "Some(None)"
                             thead {
                                 tr {
                                     th { "Datum" }
                                     th { "Bezeichnung" }
                                     th { "Intervall" }
-                                    th { class:"betrag", "pro Monat" }
-                                    th { class:"betrag", "pro Jahr" }
-                                    th { class:"aktion", "Aktion" }
+                                    th { class: "betrag", "pro Monat" }
+                                    th { class: "betrag", "pro Jahr" }
+                                    th { class: "aktion", "Aktion" }
                                 }
                             }
                             tbody {
                                 for k in buchung {
-                                    
+        
                                     tr { key: "{k.id}",
                                         td { "{k.datum}" }
                                         td { "{k.bezeichnung}" }
-                                        td { 
-                                            "{k.intervall.as_ref().map(|i| i.to_string()).unwrap_or_else(|| \"-\".to_string())}" 
+                                        td {
+                                            "{k.intervall.as_ref().map(|i| i.to_string()).unwrap_or_else(|| \"-\".to_string())}"
                                         }
-                                        td { class:"betrag", "{format_betrag(k.betrag)}" }
-                                        td { class:"betrag", "{format_betrag(k.betrag *12.0)}" }
-                                        td { class:"aktion", Delete{buchung_resource: buchung_resource, id: k.id} }
+                                        td { class: "betrag", "{format_betrag(k.betrag)}" }
+                                        td { class: "betrag", "{format_betrag(k.betrag *12.0)}" }
+                                        td { class: "aktion",
+                                            Delete { buchung_resource, id: k.id.clone() }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 },
-                
-                // 2. Fehler beim Laden vom Server (Some -> Err)
                 Some(Err(e)) => rsx! {
-                    div { 
-                        style: "color: red;",
-                        "Fehler beim Laden der Buchung: {e}" 
-                    }
+                    div { style: "color: red;", "Fehler beim Laden der Buchung: {e}" }
                 },
-
-                // 3. Daten werden noch geladen (None)
-                // Hier lag der Fehler: Es ist einfach "None", nicht "Some(None)"
                 None => rsx! {
                     div { "Lade Daten..." }
-                }
+                },
             }
         }
-        div {  class:"total_summe",
-            style:"color:green;",
+        div { class: "total_summe", style: "color:green;",
             p { "Total Einahmen: {gesamt_summe.read().unwrap_or(0.0):.2}" }
         }
-       
+
     }
 }

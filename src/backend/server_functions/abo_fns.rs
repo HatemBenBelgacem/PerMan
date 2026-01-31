@@ -11,12 +11,12 @@ pub async fn speichere_abo(bezeichnung: String, beginn: NaiveDate, dauer: f64, k
     let db = get_db().await;
 
     // KORREKTUR: Platzhalter $1, $2, $3, $4, $5 für PostgreSQL
-    let result = sqlx::query("INSERT INTO abo (bezeichnung, beginn, dauer, knd_frist) VALUES ($1, $2, $3, $4)")
+    let result = sqlx::query_scalar("INSERT INTO abo (bezeichnung, beginn, dauer, knd_frist) VALUES ($1, $2, $3, $4) RETURNING id")
         .bind(&bezeichnung)
         .bind(&beginn)
         .bind(&dauer)
         .bind(&knd_frist)
-        .execute(db)
+        .fetch_one(db)
         .await
         .map_err(|e| ServerFnError::new(e.to_string()))?; // .unwrap() durch Fehlerbehandlung ersetzt
     
@@ -41,7 +41,7 @@ pub async fn list_abo() -> Result<Vec<Abo>, ServerFnError> {
     let db = get_db().await;
 
     // Query hat keine Parameter, ist also kompatibel
-    let rows = sqlx::query_as::<_, Abo>("SELECT id, bezeichnung, beginn, dauer, knd_frist FROM abo")
+    let rows = sqlx::query_as::<_, Abo>("SELECT id::text, bezeichnung, beginn, dauer, knd_frist FROM abo")
         .fetch_all(db)
         .await
         .map_err(|e| ServerFnError::new(e.to_string()))?;

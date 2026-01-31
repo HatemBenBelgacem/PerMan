@@ -4,7 +4,7 @@ CREATE TYPE intervall AS ENUM ('taeglich', 'woechentlich', 'monatlich', 'jaehrli
 CREATE TYPE art AS ENUM ('einahmen', 'ausgaben'); -- 'art' ist ein riskanter Name, besser 'art_type' oder ähnlich
 
 CREATE TABLE IF NOT EXISTS buchung (
-    id UUID PRIMARY KEY gen_random_uuid(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     datum DATE NOT NULL,
     bezeichnung TEXT NOT NULL,
     betrag DOUBLE PRECISION NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS buchung (
 
 -- Tabelle Benutzer
 CREATE TABLE IF NOT EXISTS benutzer (
-    id UUID PRIMARY KEY gen_random_uuid(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     benutzername TEXT NOT NULL,
     email TEXT NOT NULL,
     passwort TEXT NOT NULL
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS benutzer (
 
 -- Tabelle Abo
 CREATE TABLE IF NOT EXISTS abo (
-    id UUID PRIMARY KEY gen_random_uuid(), -- TEXT als ID ist okay (z.B. für UUIDs)
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(), -- TEXT als ID ist okay (z.B. für UUIDs)
     bezeichnung TEXT NOT NULL,
     beginn DATE NOT NULL,
     dauer DOUBLE PRECISION NOT NULL,
