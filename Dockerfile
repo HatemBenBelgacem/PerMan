@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 
 # Dioxus CLI via binstall (schneller als kompilieren)
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-RUN cargo binstall --no-confirm dioxus-cli@0.6.0
+RUN cargo binstall --no-confirm dioxus-cli@0.6.3
 RUN rustup target add wasm32-unknown-unknown
 
 WORKDIR /usr/src/app
@@ -18,7 +18,6 @@ COPY . .
 
 # SQLx Offline-Modus & Index Update
 ENV SQLX_OFFLINE=true
-RUN cargo update
 
 # Fullstack-Build für Dioxus 0.6
 RUN dx build --release
