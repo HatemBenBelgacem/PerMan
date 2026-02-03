@@ -11,7 +11,7 @@ pub async fn speichere_buchung(datum:NaiveDate, bezeichnung: String, betrag:f64,
     let db = get_db().await;
 
     // KORREKTUR: PostgreSQL nutzt $1, $2... und RETURNING id
-    let id: String = sqlx::query_scalar("INSERT INTO buchung (datum, bezeichnung, betrag, intervall, art) VALUES ($1, $2, $3, $4, $5) RETURNING id")
+    let id: String = sqlx::query_scalar("INSERT INTO buchung (datum, bezeichnung, betrag, intervall, art) VALUES ($1, $2, $3, $4, $5) RETURNING id::TEXT")
         .bind(&datum)
         .bind(&bezeichnung)
         .bind(&betrag)
@@ -43,7 +43,7 @@ pub async fn liste_buchung() -> Result<Vec<Buchung>, ServerFnError> {
     let db = get_db().await;
 
     // Keine Parameter, Syntax ist ok
-    let rows = sqlx::query_as::<_, Buchung>("SELECT id, datum, bezeichnung, betrag, intervall, art FROM buchung WHERE art = 'ausgaben'")
+    let rows = sqlx::query_as::<_, Buchung>("SELECT id::TEXT, datum, bezeichnung, betrag, intervall, art FROM buchung WHERE art = 'ausgaben'")
         .fetch_all(db)
         .await
         .map_err(|e| ServerFnError::new(e.to_string()))?;
@@ -56,7 +56,7 @@ pub async fn liste_buchung_einahmen() -> Result<Vec<Buchung>, ServerFnError> {
     let db = get_db().await;
 
     // Keine Parameter, Syntax ist ok
-    let rows = sqlx::query_as::<_, Buchung>("SELECT id, datum, bezeichnung, betrag, intervall, art FROM buchung WHERE art = 'einahmen'")
+    let rows = sqlx::query_as::<_, Buchung>("SELECT id::TEXT, datum, bezeichnung, betrag, intervall, art FROM buchung WHERE art = 'einahmen'")
         .fetch_all(db)
         .await
         .map_err(|e| ServerFnError::new(e.to_string()))?;
