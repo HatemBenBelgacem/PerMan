@@ -8,7 +8,7 @@ edition = "2024"
 
 [dependencies]
 chrono = {version ="0.4.42", features = ["serde"]}
-dioxus = { version = "0.6.0", features = ["router", "fullstack"] }
+dioxus = { version = "0.6.3", features = ["router", "fullstack"] }
 serde = { version = "1.0.215", features = ["derive"] }
 sqlx = { version="0.8.3", features = [ "postgres", "runtime-tokio", "chrono", "uuid" ], optional = true}
 wasm-bindgen = "=0.2.100"
