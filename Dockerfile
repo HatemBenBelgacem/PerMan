@@ -20,7 +20,7 @@ COPY . .
 ENV SQLX_OFFLINE=true
 
 # Fullstack-Build für Dioxus 0.6
-RUN dx build --release
+RUN dx build --release --fullstack
 
 # Stage 2: Runtime
 FROM debian:bookworm-slim
@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y libssl-dev ca-certificates && rm -rf /v
 WORKDIR /usr/local/bin
 
 # Kopiere die Binary und Assets aus dem dist-Ordner
-COPY --from=builder /usr/src/app/dist/per-man /usr/local/bin/per-man-server
+COPY --from=builder /usr/src/app/dist/ /usr/local/bin/
 COPY --from=builder /usr/src/app/dist/public /usr/local/bin/public
 COPY --from=builder /usr/src/app/migrations /usr/local/bin/migrations
 
