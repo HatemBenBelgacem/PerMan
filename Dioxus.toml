@@ -1,7 +1,8 @@
 [application]
+name = "per-man"
+asset_dir = "assets"
 
 [web.app]
-
 # HTML title tag content
 title = "per-man"
 
@@ -9,13 +10,16 @@ title = "per-man"
 [web.resource]
 
 # Additional CSS style files
-style = []
+style = ["main.css"]
 
 # Additional JavaScript files
 script = []
 
 [web.resource.dev]
-
 # Javascript code file
 # serve: [dev-server] only
 script = []
+
+[bundle]
+identifier = "com.perman.app"
+publisher = "hatem"
