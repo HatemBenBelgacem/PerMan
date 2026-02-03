@@ -9,6 +9,11 @@ title = "per-man"
 style = ["main.css"]
 script = []
 
+# Dieser Teil hat gefehlt und den Fehler verursacht:
+[web.resource.dev]
+style = []
+script = []
+
 [bundle]
 identifier = "com.perman.app"
 publisher = "hatem"
