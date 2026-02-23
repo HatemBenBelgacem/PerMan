@@ -1,5 +1,6 @@
 [application]
 name = "per-man"
+out_dir = "dist"
 asset_dir = "assets"
 
 [web.app]

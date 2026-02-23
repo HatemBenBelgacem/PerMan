@@ -16,9 +16,8 @@ COPY . .
 # SQLx Offline-Modus (verhindert DB-Connect Fehler beim Build)
 ENV SQLX_OFFLINE=true
 
-# Fullstack-Build ausführen
-# Das "|| exit 1" stellt sicher, dass Docker stoppt, wenn dx build fehlschlägt
-RUN dx build --release --fullstack || (echo "BUILD FEHLGESCHLAGEN!" && exit 1)
+
+RUN dx build --release --platform fullstack || (echo "BUILD FEHLGESCHLAGEN!" && exit 1)
 
 # DIAGNOSE: Zeigt im Railway-Log an, was wirklich im dist-Ordner liegt
 RUN ls -R dist || echo "Dist-Ordner wurde nicht erstellt!"
