@@ -5,22 +5,17 @@ RUN apt-get update && apt-get install -y \
     pkg-config libssl-dev curl \
     && rm -rf /var/lib/apt/lists/*
 
-# CLI Version 0.6.3 passend zum Crate installieren
+# CLI Version 0.6.3 installieren
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 RUN cargo binstall --no-confirm dioxus-cli@0.6.3
 RUN rustup target add wasm32-unknown-unknown
 
 WORKDIR /usr/src/app
 COPY . .
-
-# SQLx Offline-Modus (verhindert DB-Connect Fehler beim Build)
 ENV SQLX_OFFLINE=true
 
-
-RUN dx build --release || (echo "BUILD FEHLGESCHLAGEN!" && exit 1)
-
-# DIAGNOSE: Zeigt im Railway-Log an, was wirklich im dist-Ordner liegt
-RUN ls -R dist || echo "Dist-Ordner wurde nicht erstellt!"
+# WICHTIG: --platform server zwingt Dioxus, Backend UND Frontend zu bauen
+RUN dx build --release --platform server || (echo "BUILD FEHLGESCHLAGEN!" && exit 1)
 
 # Stage 2: Runtime
 FROM debian:bookworm-slim
@@ -28,13 +23,17 @@ RUN apt-get update && apt-get install -y libssl-dev ca-certificates && rm -rf /v
 
 WORKDIR /app
 
-# Kopiere ALLES aus dem dist-Ordner
-COPY --from=builder /usr/src/app/dist .
+# 1. Server-Binary kopieren (Cargo legt diese standardmäßig hier ab)
+COPY --from=builder /usr/src/app/target/release/per-man ./per-man
+
+# 2. Web-Assets (WASM, JS, CSS) kopieren (Das ist der Ordner aus deinem Log!)
+COPY --from=builder /usr/src/app/target/dx/per-man/release/web/public ./public
+
+# 3. Datenbank-Migrationen kopieren
 COPY --from=builder /usr/src/app/migrations ./migrations
 
 ENV PORT=8080
 ENV IP=0.0.0.0
 EXPOSE 8080
 
-# In Dioxus 0.6 Fullstack ist die Binary direkt im dist-Ordner
 CMD ["./per-man"]
