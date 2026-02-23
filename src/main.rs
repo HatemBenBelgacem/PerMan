@@ -39,6 +39,8 @@ enum Route {
 }
 
 fn main() {
+
+    println!("🚀 PER-MAN SERVER STARTET AUF PORT 8080...");
     // NEU: Umgebungsvariablen laden (nur auf dem Server)
     #[cfg(feature = "server")]
     {
