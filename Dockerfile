@@ -33,8 +33,14 @@ COPY --from=builder /usr/src/app/target/dx/per-man/release/web ./public
 # 3. Datenbank-Migrationen kopieren
 COPY --from=builder /usr/src/app/migrations ./migrations
 
+ENV DIOXUS_PORT=8080
+ENV DIOXUS_HOST=0.0.0.0
 ENV PORT=8080
 ENV IP=0.0.0.0
+
+# NEU: Wir zwingen Dioxus, exakt in diesem Ordner nach der index.html zu suchen
+ENV DIOXUS_ASSET_DIR=/app/public
+
 EXPOSE 8080
 
 CMD ["./per-man"]
