@@ -17,7 +17,7 @@ COPY . .
 ENV SQLX_OFFLINE=true
 
 
-RUN dx build --release --platform fullstack || (echo "BUILD FEHLGESCHLAGEN!" && exit 1)
+RUN dx build --release || (echo "BUILD FEHLGESCHLAGEN!" && exit 1)
 
 # DIAGNOSE: Zeigt im Railway-Log an, was wirklich im dist-Ordner liegt
 RUN ls -R dist || echo "Dist-Ordner wurde nicht erstellt!"
