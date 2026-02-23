@@ -90,7 +90,7 @@ pub async fn total_buchung_einahmen() -> Result<f64, ServerFnError> {
 pub async fn total_buchung_heute() -> Result<f64, ServerFnError> {
     let db = get_db().await;
 
-    let summe: Option<f64> = sqlx::query_scalar("SELECT SUM(betrag) FROM buchung WHERE art = 'ausgaben' AND datum = CURRENT_DATE AND")
+    let summe: Option<f64> = sqlx::query_scalar("SELECT SUM(betrag) FROM buchung WHERE art = 'ausgaben' AND datum = CURRENT_DATE AND intervall = 'einmalig'")
         .fetch_one(db)
         .await
         .map_err(|e| ServerFnError::new(e.to_string()))?;
