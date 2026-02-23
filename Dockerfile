@@ -27,7 +27,7 @@ WORKDIR /app
 COPY --from=builder /usr/src/app/target/release/per-man ./per-man
 
 # 2. Web-Assets (WASM, JS, CSS) kopieren (Das ist der Ordner aus deinem Log!)
-COPY --from=builder /usr/src/app/target/dx/per-man/release/web/public ./public
+COPY --from=builder /usr/src/app/target/dx/per-man/release/web ./public
 
 # 3. Datenbank-Migrationen kopieren
 COPY --from=builder /usr/src/app/migrations ./migrations
