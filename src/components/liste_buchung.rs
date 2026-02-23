@@ -1,6 +1,6 @@
 use dioxus::{prelude::*};
 
-use crate::backend::server_functions::{buchung_fns::liste_buchung};
+use crate::backend::server_functions::{buchung_fns::liste_buchung, buchung_fns::total_buchung_heute};
 use crate::backend::{server_functions::buchung_fns::total_buchung};
 use crate::backend::server_functions::buchung_fns::total_buchung_einahmen;
 
@@ -13,9 +13,11 @@ let buchung_resource = use_resource(move || async move {liste_buchung().await});
 
 let total_ausgaben = use_resource(move || async move {total_buchung().await.unwrap_or(0.0)});
 let total_einahmen = use_resource(move || async move {total_buchung_einahmen().await.unwrap_or(0.0)});
+let total_heute = use_resource(move || async move {total_buchung_heute().await.unwrap_or(0.0)});
 
 let ausgaben = total_ausgaben.read().unwrap_or(0.0);
 let einnahmen = total_einahmen.read().unwrap_or(0.0);
+let heute = total_heute.read().unwrap_or(0.0);
 let differenz = einnahmen - ausgaben;
 
 fn format_betrag(wert: f64) -> String {
@@ -35,6 +37,12 @@ fn format_datum(datum: chrono::NaiveDate) -> String {
     datum.format("%d.%m.%Y").to_string()
 }
     rsx! {
+        div { class: "heute",
+            h1 { "Ausgaben heute" }
+            p { "{heute}" }
+        
+        }
+
         div { class: "functions",
             Link { class: "btn", to: "/buchung/add", "Neu buchung" }
             Link { class: "btn", to: "/", "Zurück" }
@@ -50,8 +58,6 @@ fn format_datum(datum: chrono::NaiveDate) -> String {
                         div { "Keine Buchung gefunden." }
                     } else {
                         table {
-
-        
 
                             // 2. Fehler beim Laden vom Server (Some -> Err)
 

@@ -29,7 +29,7 @@ pub async fn delete_buchung(id:String) -> Result<(), ServerFnError> {
     let db = get_db().await;
 
     // KORREKTUR: Platzhalter $1 statt ?
-    sqlx::query("DELETE FROM buchung WHERE id = $1")
+    sqlx::query("DELETE FROM buchung WHERE id = $1::uuid")
         .bind(id)
         .execute(db)
         .await
@@ -80,6 +80,17 @@ pub async fn total_buchung_einahmen() -> Result<f64, ServerFnError> {
     let db = get_db().await;
 
     let summe: Option<f64> = sqlx::query_scalar("SELECT SUM(betrag) FROM buchung WHERE art = 'einahmen'")
+        .fetch_one(db)
+        .await
+        .map_err(|e| ServerFnError::new(e.to_string()))?;
+    Ok(summe.unwrap_or(0.0))
+}
+
+#[server]
+pub async fn total_buchung_heute() -> Result<f64, ServerFnError> {
+    let db = get_db().await;
+
+    let summe: Option<f64> = sqlx::query_scalar("SELECT SUM(betrag) FROM buchung WHERE art = 'ausgaben' AND datum = CURRENT_DATE AND")
         .fetch_one(db)
         .await
         .map_err(|e| ServerFnError::new(e.to_string()))?;
