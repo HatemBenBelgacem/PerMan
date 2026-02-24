@@ -54,10 +54,6 @@ fn main() {
 fn App() -> Element {
     // ... Rest bleibt gleich ...
     use_context_provider(|| Signal::new(false)); 
-    
-    let check_users = use_resource(move || async move {
-        existiert_benutzer().await
-    });
 
     rsx! {
         document::Stylesheet { href: CSS }
