@@ -61,19 +61,7 @@ fn App() -> Element {
 
     rsx! {
         document::Stylesheet { href: CSS }
+        Router::<Route> {}
 
-        match &*check_users.read_unchecked() {
-            Some(Ok(_)) => {
-                rsx! {
-                    Router::<Route> {}
-                }
-            }
-            Some(Err(e)) => rsx! {
-                div { "Server Fehler: {e}" }
-            },
-            None => rsx! {
-                div { "Lade System..." }
-            },
-        }
     }
 }

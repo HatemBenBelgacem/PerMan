@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y \
     pkg-config libssl-dev curl \
     && rm -rf /var/lib/apt/lists/*
 
-# CLI Version 0.6.3 installieren
+# Wir nutzen das schnelle binstall
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 RUN cargo binstall --no-confirm dioxus-cli@0.6.3
 RUN rustup target add wasm32-unknown-unknown
@@ -14,7 +14,7 @@ WORKDIR /usr/src/app
 COPY . .
 ENV SQLX_OFFLINE=true
 
-# WICHTIG: --platform server zwingt Dioxus, Backend UND Frontend zu bauen
+# Dioxus baut das komplette Bundle (Binary + Assets)
 RUN dx build --release --platform server || (echo "BUILD FEHLGESCHLAGEN!" && exit 1)
 
 # Stage 2: Runtime
@@ -23,24 +23,17 @@ RUN apt-get update && apt-get install -y libssl-dev ca-certificates && rm -rf /v
 
 WORKDIR /app
 
-# 1. Server-Binary kopieren (Cargo legt diese standardmäßig hier ab)
-COPY --from=builder /usr/src/app/target/release/per-man ./per-man
+# Wir kopieren EXAKT den Ordner, in den Dioxus das fertige Server-Bundle abgelegt hat!
+COPY --from=builder /usr/src/app/target/dx/per-man/release/web ./
 
-# 2. Web-Assets (WASM, JS, CSS) kopieren (Das ist der Ordner aus deinem Log!)
-COPY --from=builder /usr/src/app/target/dx/per-man/release/web ./dist
-COPY --from=builder /usr/src/app/target/dx/per-man/release/web ./public
-
-# 3. Datenbank-Migrationen kopieren
+# Datenbank-Migrationen kopieren
 COPY --from=builder /usr/src/app/migrations ./migrations
 
-ENV DIOXUS_PORT=8080
-ENV DIOXUS_HOST=0.0.0.0
+# Railway und Dioxus Variablen
 ENV PORT=8080
 ENV IP=0.0.0.0
 
-# NEU: Wir zwingen Dioxus, exakt in diesem Ordner nach der index.html zu suchen
-ENV DIOXUS_ASSET_DIR=/app/public
-
 EXPOSE 8080
 
-CMD ["./per-man"]
+# Dioxus hat die Binary im fertigen Web-Ordner "server" genannt
+CMD ["./server"]
