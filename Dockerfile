@@ -34,6 +34,8 @@ COPY --from=builder /usr/src/app/migrations ./migrations
 # Railway und Dioxus Variablen
 ENV PORT=8080
 ENV IP=0.0.0.0
+ENV HOST=0.0.0.0
+ENV BIND_ADDR=0.0.0.0
 
 EXPOSE 8080
 
