@@ -36,4 +36,4 @@ ENV IP=0.0.0.0
 EXPOSE 8080
 
 # Dioxus hat die Binary im fertigen Web-Ordner "server" genannt
-CMD ["./server"]
+CMD ["./per-man"]
