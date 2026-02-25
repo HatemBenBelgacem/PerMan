@@ -40,4 +40,4 @@ ENV BIND_ADDR=0.0.0.0
 EXPOSE 8080
 
 # Dioxus hat die Binary im fertigen Web-Ordner "server" genannt
-CMD ["./per-man"]
+CMD ["./server"]
