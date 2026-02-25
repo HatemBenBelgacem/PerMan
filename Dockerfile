@@ -10,9 +10,11 @@ RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/ca
 RUN cargo binstall --no-confirm dioxus-cli@0.6.3
 RUN rustup target add wasm32-unknown-unknown
 
+# Ordern app wird unter usr/src/app erstellt
 WORKDIR /usr/src/app
 COPY . .
 ENV SQLX_OFFLINE=true
+
 
 # Dioxus baut das komplette Bundle (Binary + Assets)
 RUN dx build --release --platform server || (echo "BUILD FEHLGESCHLAGEN!" && exit 1)
