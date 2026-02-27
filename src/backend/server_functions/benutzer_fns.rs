@@ -19,7 +19,7 @@ pub async fn speichere_benutzer(benutzername: String, email: String, passwort:St
     let db = get_db().await;
 
     // KORREKTUR: $1, $2, $3 und RETURNING id
-    let id: String = sqlx::query_scalar("INSERT INTO benutzer (benutzername, email, passwort) VALUES ($1, $2, $3) RETURNING id")
+    let id: String = sqlx::query_scalar("INSERT INTO benutzer (benutzername, email, passwort) VALUES ($1, $2, $3) RETURNING id::TEXT")
         .bind(&benutzername)
         .bind(&email)
         .bind(&passwort)
