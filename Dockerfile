@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y libssl-dev ca-certificates && rm -rf /v
 WORKDIR /app
 
 # Wir kopieren EXAKT den Ordner, in den Dioxus das fertige Server-Bundle abgelegt hat!
-COPY --from=builder /usr/src/app/target/dx/per-man/release/web/ ./
+COPY --from=builder /usr/src/app/dist/ ./
 
 # Datenbank-Migrationen kopieren
 COPY --from=builder /usr/src/app/migrations ./migrations
