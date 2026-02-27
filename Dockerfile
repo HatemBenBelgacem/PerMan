@@ -14,7 +14,7 @@ COPY . .
 ENV SQLX_OFFLINE=true
 
 # Build ausführen
-RUN dx build --release --platform server || (echo "BUILD FEHLGESCHLAGEN!" && exit 1)
+RUN dx build --release || (echo "BUILD FEHLGESCHLAGEN!" && exit 1)
 
 # Stage 2: Runtime
 FROM debian:bookworm-slim
