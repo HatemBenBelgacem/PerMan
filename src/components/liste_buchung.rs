@@ -48,9 +48,7 @@ fn format_datum(datum: chrono::NaiveDate) -> String {
             Link { class: "btn", to: "/", "Zurück" }
         }
 
-        BuchungListeEinahmen {}
         div { class: "liste",
-            h3 { "Ausgaben" }
             match &*buchung_resource.read_unchecked() {
                 // 1. Erfolgreich geladen (Some -> Ok)
                 Some(Ok(buchung)) => rsx! {
@@ -68,6 +66,7 @@ fn format_datum(datum: chrono::NaiveDate) -> String {
                                     th { "Datum" }
                                     th { "Bezeichnung" }
                                     th { "Intervall" }
+                                    th { "Art" }
                                     th { class: "betrag", "pro Monat" }
                                     th { class: "betrag", "pro Jahr" }
                                     th { class: "aktion", "Aktion" }
@@ -81,6 +80,7 @@ fn format_datum(datum: chrono::NaiveDate) -> String {
                                         td {
                                             "{k.intervall.as_ref().map(|i| i.to_string()).unwrap_or_else(|| \"-\".to_string())}"
                                         }
+                                        td { "{k.art.as_ref().map(|i| i.to_string()).unwrap_or_else(|| \"-\".to_string())}" }
                                         td { class: "betrag", "{format_betrag(k.betrag)}" }
                                         td { class: "betrag", "{format_betrag(k.betrag*12.0)}" }
                                         td { class: "aktion",
@@ -99,12 +99,6 @@ fn format_datum(datum: chrono::NaiveDate) -> String {
                     div { "Lade Daten..." }
                 },
             }
-        }
-        div { class: "total_summe", style: "color:red",
-            p { "Total Ausgaben: {total_ausgaben.read().unwrap_or(0.0):.2}" }
-        }
-        div { class: "total_summe",
-            p { "Einahmen minus Ausgaben: {differenz:.2}" }
         }
 
     }
