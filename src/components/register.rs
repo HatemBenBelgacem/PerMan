@@ -35,32 +35,43 @@ pub fn RegisterPage() -> Element {
     rsx! {
         div { class: "login-container", // Wir nutzen denselben CSS-Style wie beim Login
             h2 { "Ersteinrichtung: Admin erstellen" }
-            
+
             if !error_msg.read().is_empty() {
                 p { style: "color: red;", "{error_msg}" }
             }
 
-            form { 
-                prevent_default: "onsubmit", 
-                onsubmit: on_submit,
+            form { prevent_default: "onsubmit", onsubmit: on_submit,
 
                 div {
                     label { "Benutzername:" }
-                    input { value: "{username}", oninput: move |e| username.set(e.value()) }
+                    input {
+                        value: "{username}",
+                        oninput: move |e| username.set(e.value()),
+                    }
                 }
                 div {
                     label { "Email:" }
-                    input { value: "{email}", oninput: move |e| email.set(e.value()) }
+                    input {
+                        value: "{email}",
+                        oninput: move |e| email.set(e.value()),
+                    }
                 }
                 div {
                     label { "Passwort:" }
-                    input { r#type: "password", value: "{password}", oninput: move |e| password.set(e.value()) }
+                    input {
+                        r#type: "password",
+                        value: "{password}",
+                        oninput: move |e| password.set(e.value()),
+                    }
                 }
-                button { 
+                button {
                     class: "btn",
                     style: "width: 100%; margin-top: 10px;",
-                    r#type: "submit", 
-                    "Registrieren" 
+                    r#type: "submit",
+                    "Registrieren"
+                }
+                p {
+                    Link { to: "/login", "login" }
                 }
             }
         }
