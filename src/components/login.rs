@@ -41,37 +41,39 @@ pub fn LoginPage() -> Element {
     rsx! {
         div { class: "login-container",
             h2 { "Anmeldung PerMan" }
-            
+
             if !error_msg.read().is_empty() {
                 p { style: "color: red;", "{error_msg}" }
             }
 
-            form { 
+            form {
                 // prevent_default und onsubmit handler anpassen
                 prevent_default: "onsubmit",
                 onsubmit: on_submit,
 
                 div {
                     label { "Benutzername:" }
-                    input { 
-                        value: "{benutzername}", 
-                        oninput: move |evt| benutzername.set(evt.value()) 
+                    input {
+                        value: "{benutzername}",
+                        oninput: move |evt| benutzername.set(evt.value()),
                     }
                 }
                 div {
                     label { "Passwort:" }
-                    input { 
-                        r#type: "password", 
-                        value: "{password}", 
-                        oninput: move |evt| password.set(evt.value()) 
+                    input {
+                        r#type: "password",
+                        value: "{password}",
+                        oninput: move |evt| password.set(evt.value()),
                     }
                 }
-                button { 
-                    class: "btn", 
+                button {
+                    class: "btn",
                     style: "width: 100%; margin-top: 10px;",
-                    r#type: "submit", 
-                    "Anmelden" 
+                    r#type: "submit",
+                    "Anmelden"
                 }
+
+                Link { to: "/register", "registrieren" }
             }
         }
     }
