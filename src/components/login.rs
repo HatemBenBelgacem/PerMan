@@ -72,8 +72,10 @@ pub fn LoginPage() -> Element {
                     r#type: "submit",
                     "Anmelden"
                 }
-
-                Link { to: "/register", "registrieren" }
+                p {
+                    Link { to: "/register", "registrieren" }
+                }
+            
             }
         }
     }
