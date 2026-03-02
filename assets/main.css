@@ -432,7 +432,7 @@ button:disabled {
     /* Wichtig: Tabellen-Container scrollbar machen, damit Layout nicht bricht */
     .liste {
         overflow-x: auto;
-        padding: 15px;
+        padding: 5px;
     }
 
     /* Buttons untereinander stapeln für bessere Touch-Bedienung */
