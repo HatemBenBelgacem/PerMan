@@ -25,6 +25,18 @@ pub async fn speichere_buchung(datum:NaiveDate, bezeichnung: String, betrag:f64,
 }
 
 #[server]
+pub async fn detail_buchung(id:String) -> Result<(), ServerFnError> {
+    let db = get_db().await;
+
+    sqlx::query("SELECT * FROM buchung WHERE id = $1::uuid")
+        .bind(id)
+        .execute(db)
+        .await
+        .map_err(|e| ServerFnError::new(e.to_string()))?;
+    Ok(())
+}
+
+#[server]
 pub async fn delete_buchung(id:String) -> Result<(), ServerFnError> {
     let db = get_db().await;
 

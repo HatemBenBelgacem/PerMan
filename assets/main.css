@@ -314,7 +314,8 @@ button:disabled {
     background: transparent;
     box-shadow: none;
     border: none;
-    padding: 0 10px 0 10px;  
+    padding: 0;
+    margin: 10px 10px 10px 10px;
     display: flex;
     justify-content: flex-start;
     gap: 10px;
@@ -442,7 +443,7 @@ button:disabled {
     .functions .btn, button {
         width: 100%;
         margin-right: 0;
-        margin-bottom: 10px;
+        margin: 10px 0 10px 0;
         justify-content: center;
     }
 }

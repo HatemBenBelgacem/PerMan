@@ -7,9 +7,6 @@ use components::buchung::{
 use components::geruest::{app_layout::AppLayout, header::Header, home::Home, nav::Nav};
 use components::{login::LoginPage, register::RegisterPage};
 use components::abo::{add_abo::AddAbo, list_abo::AboListe};
-
-
-
 use crate::backend::server_functions::benutzer_fns::existiert_benutzer;
 use crate::components::abo::{add_abo, list_abo};
 
@@ -59,7 +56,7 @@ fn main() {
 #[component]
 fn App() -> Element {
     // ... Rest bleibt gleich ...
-    use_context_provider(|| Signal::new(false)); 
+    use_context_provider(|| Signal::new(true)); 
 
     rsx! {
         document::Stylesheet { href: CSS }

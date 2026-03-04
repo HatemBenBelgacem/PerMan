@@ -23,8 +23,7 @@ let differenz = einnahmen - ausgaben;
 fn format_betrag(wert: f64) -> String {
     let mut buf = Buffer::default();
     let ganzzahl = wert as i64;
-    // Locale::de_CH macht 1'000 (Schweiz)
-    // Locale::de_DE macht 1.000 (Deutschland)
+
     buf.write_formatted(&ganzzahl, &Locale::de_CH); 
 
     // Nachkommastellen berechnen
@@ -37,12 +36,6 @@ fn format_datum(datum: chrono::NaiveDate) -> String {
     datum.format("%d.%m.%Y").to_string()
 }
     rsx! {
-        div { class: "heute",
-            h1 { "Ausgaben heute" }
-            p { "{heute}" }
-        
-        }
-
         div { class: "functions",
             Link { class: "btn", to: "/buchung/add", "Neu buchung" }
             Link { class: "btn", to: "/", "Zurück" }
