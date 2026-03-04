@@ -1,16 +1,22 @@
 use dioxus::prelude::*;
 
-use components::{
-    add_buchung::AddBuchung, app_layout::AppLayout, home::Home,
-    jahresuebersicht::Jahresuebersicht, liste_buchung::BuchungListe,
-    login::LoginPage, register::RegisterPage, add_abo::AddAbo, list_abo::AboListe,
+use components::buchung::{
+    add_buchung::AddBuchung, delete_buchung::Delete, liste_buchung::BuchungListe, 
+    jahresuebersicht::Jahresuebersicht, 
 };
+use components::geruest::{app_layout::AppLayout, header::Header, home::Home, nav::Nav};
+use components::{login::LoginPage, register::RegisterPage};
+use components::abo::{add_abo::AddAbo, list_abo::AboListe};
+
+
 
 use crate::backend::server_functions::benutzer_fns::existiert_benutzer;
+use crate::components::abo::{add_abo, list_abo};
 
 mod backend;
 mod components;
 mod icons;
+
 
 static CSS: Asset = asset!("/assets/main.css");
 

@@ -167,7 +167,6 @@ details p a:hover {
 /* Main Content Area */
 .container div.content {
     grid-area: content;
-    padding: 30px;
     overflow-y: auto;
 }
 
@@ -315,7 +314,7 @@ button:disabled {
     background: transparent;
     box-shadow: none;
     border: none;
-    padding: 0;
+    padding: 0 10px 0 10px;  
     display: flex;
     justify-content: flex-start;
     gap: 10px;

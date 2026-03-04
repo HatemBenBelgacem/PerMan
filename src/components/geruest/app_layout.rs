@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-use crate::components::{header::Header, nav::Nav};
+use crate::components::geruest::{header::Header, nav::Nav};
 use crate::Route;
 // WICHTIG: Import hinzufügen!
 use crate::backend::server_functions::benutzer_fns::existiert_benutzer; 
@@ -23,10 +23,14 @@ pub fn AppLayout() -> Element {
                 use_effect(move || {
                     nav.replace(Route::RegisterPage {});
                 });
-                return rsx! { div { "Leite zur Einrichtung weiter..." } };
+                return rsx! {
+                    div { "Leite zur Einrichtung weiter..." }
+                };
             }
         },
-        _ => return rsx! { div { "Lade..." } } // Zeige Lade-Text solange der Check läuft
+        _ => return rsx! {
+            div { "Lade..." }
+        } // Zeige Lade-Text solange der Check läuft
     }
 
     // 2. Check: Ist der Benutzer eingeloggt? (Nur wenn Benutzer existieren)
@@ -34,25 +38,17 @@ pub fn AppLayout() -> Element {
         use_effect(move || {
             nav.replace(Route::LoginPage {});
         });
-        return rsx!{ div {"Bitte anmelden..."}};
+        return rsx!{
+            div { "Bitte anmelden..." }
+        };
     }
     
     rsx!{
-        div { 
-            class:"container",
-            div {  
-                class:"header",
-                Header {  }
-            }
-            
-            div {  
-                class:"menu",
-                Nav {  }
-            }
-            div {  
-                class:"content",
-                Outlet::<Route> {}
-            }
+        div { class: "container",
+            div { class: "header", Header {} }
+
+            div { class: "menu", Nav {} }
+            div { class: "content", Outlet::<Route> {} }
         }
     }
 }

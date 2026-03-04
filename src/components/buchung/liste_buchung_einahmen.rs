@@ -1,6 +1,6 @@
 use dioxus::{prelude::*};
 use crate::backend::server_functions::buchung_fns::{liste_buchung_einahmen, total_buchung_einahmen};
-use crate::components::delete_buchung::Delete;
+use crate::components::buchung::delete_buchung::Delete;
 use num_format::{Buffer, Locale};
 
 
@@ -36,8 +36,6 @@ fn format_betrag(wert: f64) -> String {
                     } else {
                         table {
 
-        
-
                             // 2. Fehler beim Laden vom Server (Some -> Err)
 
                             // 3. Daten werden noch geladen (None)
@@ -54,7 +52,7 @@ fn format_betrag(wert: f64) -> String {
                             }
                             tbody {
                                 for k in buchung {
-        
+
                                     tr { key: "{k.id}",
                                         td { "{k.datum}" }
                                         td { "{k.bezeichnung}" }

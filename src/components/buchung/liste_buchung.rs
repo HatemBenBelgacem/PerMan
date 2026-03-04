@@ -4,7 +4,7 @@ use crate::backend::server_functions::{buchung_fns::liste_buchung, buchung_fns::
 use crate::backend::{server_functions::buchung_fns::total_buchung};
 use crate::backend::server_functions::buchung_fns::total_buchung_einahmen;
 
-use crate::components::{delete_buchung::Delete, liste_buchung_einahmen::BuchungListeEinahmen};
+use crate::components::buchung::{delete_buchung::Delete};
 use num_format::{Buffer, Locale};
 
 #[component]

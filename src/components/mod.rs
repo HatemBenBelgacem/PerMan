@@ -1,13 +1,6 @@
-pub mod add_buchung;
-pub mod delete_buchung;
-pub mod liste_buchung;
-pub mod nav;
-pub mod app_layout;
-pub mod header;
-pub mod home;
-pub mod jahresuebersicht;
 pub mod login;
 pub mod register;
-pub mod liste_buchung_einahmen;
-pub mod add_abo;
-pub mod list_abo;
+pub mod buchung;
+pub mod geruest;
+pub mod benutzer;
+pub mod abo;
