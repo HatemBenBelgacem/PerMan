@@ -25,10 +25,15 @@ pub async fn speichere_buchung(datum:NaiveDate, bezeichnung: String, betrag:f64,
 }
 
 #[server]
-pub async fn detail_buchung(id:String) -> Result<(), ServerFnError> {
+pub async fn update_buchung(id:String, datum:NaiveDate, bezeichnung: String, betrag:f64, intervall: BuchungsIntervall, art: Art) -> Result<(), ServerFnError> {
     let db = get_db().await;
 
-    sqlx::query("SELECT * FROM buchung WHERE id = $1::uuid")
+    sqlx::query("UPDATE buchung SET datum = $1, bezeichnung = $2, betrag = $3, intervall = $4, art = $5 WHERE id = $6::uuid")
+        .bind(&datum)
+        .bind(&bezeichnung)
+        .bind(&betrag)
+        .bind(&intervall)
+        .bind(&art)
         .bind(id)
         .execute(db)
         .await
