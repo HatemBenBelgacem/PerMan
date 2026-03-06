@@ -1,17 +1,17 @@
 use dioxus::prelude::*;
-use crate::backend::server_functions::buchung_fns::{update_buchung};
+use crate::backend::server_functions::buchung_fns::{update_buchung}; 
 use crate::backend::models::buchung::{BuchungsIntervall, Art};
 use chrono::NaiveDate;
 
-
-
-pub fn EditBuchung(id:String) -> Element {
+#[component] 
+pub fn EditBuchung(id: String) -> Element {
     let nav = use_navigator();
 
-    let buchung_data = use_resource(move|| {
+    // 1. Ressource zum Laden der bestehenden Daten
+    let buchung_resource = use_resource(move || {
         let id = id.clone();
         async move {
-            
+
         }
     });
 
@@ -31,32 +31,49 @@ pub fn EditBuchung(id:String) -> Element {
                 oninput: move |e| bezeichnung.set(e.value()),
             }
 
-            // ... Analog zu AddBuchung die weiteren Felder ...
             button {
                 class: "btn",
-                onclick: move |_| {
-                    let id = id.clone();
-                    async move {
-                        if let Ok(parsed_date) = NaiveDate::parse_from_str(
-                            &datum.read(),
-                            "%Y-%m-%d",
-                        ) {
-                            let res = update_buchung(
-                                    id,
-                                    parsed_date,
-                                    bezeichnung.read().clone(),
-                                    betrag.read().parse().unwrap_or(0.0),
-                                    intervall.read().clone(),
-                                    art.read().clone(),
-                                )
-                                .await;
-                            if res.is_ok() {
+                onclick: move |_| async move {
+                    let save_datum = datum.read().clone();
+                    let save_bezeichnung = bezeichnung.read().clone();
+                    let save_betrag = betrag.read().parse::<f64>().unwrap_or(0.0);
+                    let save_intervall = intervall.read().clone();
+                    let save_art = art.read().clone();
+
+                    if let Ok(parsed_datum) = NaiveDate::parse_from_str(&save_datum, "%Y-%m-%d") {
+                        match update_buchung(
+                                parsed_datum,
+                                save_bezeichnung.clone(),
+                                save_betrag.clone(),
+                                save_intervall.clone(),
+                                save_art.clone(),
+                            )
+                            .await
+                        // WICHTIG: Fehler ausgeben!
+                        {
+                            Ok(new_uuid) => {
+                                let buchung = Buchung {
+                                    id: new_uuid,
+                                    datum: parsed_datum,
+                                    bezeichnung: save_bezeichnung,
+                                    betrag: save_betrag,
+                                    intervall: Some(save_intervall),
+                                    art: Some(save_art),
+                                };
+                                list_signal.write().push(buchung);
                                 nav.push("/buchung");
+                            }
+                            Err(e) => {
+                                println!("FEHLER beim Speichern: {:?}", e);
                             }
                         }
                     }
+                    datum.set(String::new());
+                    bezeichnung.set(String::new());
+                    betrag.set(String::new());
                 },
-                "Änderungen speichern"
+                disabled: if bezeichnung.read().trim().is_empty() { true } else { false },
+                "Speichern"
             }
             Link { class: "btn", to: "/buchung", "Abbrechen" }
         }
