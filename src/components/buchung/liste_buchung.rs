@@ -6,6 +6,7 @@ use crate::backend::server_functions::buchung_fns::total_buchung_einahmen;
 
 use crate::components::buchung::{delete_buchung::Delete};
 use num_format::{Buffer, Locale};
+use crate::icons::{Icon, mdi_light};
 
 #[component]
 pub fn BuchungListe() -> Element {
@@ -78,6 +79,9 @@ fn format_datum(datum: chrono::NaiveDate) -> String {
                                         td { class: "betrag", "{format_betrag(k.betrag*12.0)}" }
                                         td { class: "aktion",
                                             Delete { buchung_resource, id: k.id.clone() }
+                                        }
+                                        Link { class: "aktion", to: "/buchung/edit/{k.id}",
+                                            Icon { data: mdi_light::Pencil }
                                         }
                                     }
                                 }
