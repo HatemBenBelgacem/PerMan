@@ -6,6 +6,21 @@ use chrono::NaiveDate;
 #[cfg(feature = "server")]
 use crate::backend::{db::get_db};
 
+
+
+#[server]
+pub async fn get_buchung(id: String) -> Result<Buchung, ServerFnError> {
+    let db = get_db().await;
+
+    let row = sqlx::query_as::<_, Buchung>("SELECT id::TEXT, datum, bezeichnung, betrag, intervall, art FROM buchung WHERE id = $1::uuid")
+        .bind(id)
+        .fetch_one(db)
+        .await
+        .map_err(|e| ServerFnError::new(e.to_string()))?;
+
+    Ok(row)
+}
+
 #[server]
 pub async fn speichere_buchung(datum:NaiveDate, bezeichnung: String, betrag:f64, intervall: BuchungsIntervall, art: Art) -> Result<String, ServerFnError> {
     let db = get_db().await;
