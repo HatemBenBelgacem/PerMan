@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 
 use components::buchung::{
     add_buchung::AddBuchung, delete_buchung::Delete, liste_buchung::BuchungListe, 
-    jahresuebersicht::Jahresuebersicht, 
+    jahresuebersicht::Jahresuebersicht,edit_buchung::EditBuchung 
 };
 use components::geruest::{app_layout::AppLayout, header::Header, home::Home, nav::Nav};
 use components::{login::LoginPage, register::RegisterPage};
@@ -33,6 +33,8 @@ enum Route {
         BuchungListe {},
         #[route("/buchung/add")]
         AddBuchung{},
+        #[route("/buchung/edit/:id")]
+        EditBuchung{id:String},
         #[route("/jahresuebersicht")]
         Jahresuebersicht{},
         #[route("/abo")]
